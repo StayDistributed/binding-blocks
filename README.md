@@ -19,4 +19,34 @@ React 2-way data binding to easily manage complex forms and data structures.
 [bch-badge]: https://bettercodehub.com/edge/badge/StayDistributed/binding-blocks?branch=master
 [bch]: (https://bettercodehub.com/)
 
+--
+
+## Install
+
+```bash
+$ npm i binding-blocks
+```
+
+## Usage
+
+```jsx
+import { Binding, Value } from 'binding-blocks';
+
+const someData = {
+  title: 'Hello',
+  subtitle: 'World!'
+};
+
+const HelloWorld = () => {
+  return (
+    <Binding data={someData}>
+      <h1><Value name="title" /></h1>
+      <h3><Value name="subtitle" /></h3>
+    </Binding>
+  );
+}
+```
+
+## Docs
+
 **To start data binding with React, visit [https://staydistributed.github.io/binding-blocks/](https://staydistributed.github.io/binding-blocks/)**
