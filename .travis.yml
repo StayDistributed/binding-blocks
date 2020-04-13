@@ -1,0 +1,45 @@
+language: node_js
+os: linux
+dist: xenial
+node_js:
+  - 10
+
+branches:
+  only:
+    - master
+    - develop
+    - /^feature.*$/
+    - /^release.*$/
+    - /^hotfix.*$/
+
+install:
+  - npm install
+  - npm install coveralls
+
+script:
+  - npm run test:coverage
+
+after_success:
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - npm run build
+  - npm run docs:build
+  
+deploy:
+  # https://docs.travis-ci.com/user/deployment/npm/ 
+  - provider: npm
+    email: $NPM_EMAIL
+    api_token: $NPM_API_KEY
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: true
+  # https://docs.travis-ci.com/user/deployment/pages/
+  - provider: pages
+    verbose: true
+    skip_cleanup: true
+    strategy: git
+    local_dir: docs
+    target_branch: gh-pages
+    token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    on:
+      branch: master

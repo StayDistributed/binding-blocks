@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "jsx": "react",
+    "lib": ["dom"],
+    "noResolve": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+  },
+  "include": [
+    "./src",
+    "./demo",
+    "./tests",
+  ]
+}

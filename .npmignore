@@ -1,0 +1,12 @@
+demo
+docs
+output
+src
+tests
+
+.*rc
+.*ignore
+*.config.js
+
+tsconfig.json
+.travis.yml
