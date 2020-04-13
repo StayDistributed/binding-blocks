@@ -32,7 +32,6 @@ deploy:
     skip_cleanup: true
     on:
       branch: master
-      tags: true
   # https://docs.travis-ci.com/user/deployment/pages/
   - provider: pages
     verbose: true
