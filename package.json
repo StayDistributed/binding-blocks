@@ -15,8 +15,7 @@
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:clear": "NODE_ENV=test jest --clearCache",
     "docs": "npx styleguidist server",
-    "docs:build": "npx styleguidist build",
-    "docs:deploy": "NODE_DEBUG=gh-pages gh-pages -d docs"
+    "docs:build": "npx styleguidist build"
   },
   "repository": {
     "type": "git",
@@ -62,7 +61,6 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
-    "gh-pages": "^2.2.0",
     "jest": "^25.2.3",
     "prettier": "^2.0.2",
     "react": "^16.13.1",

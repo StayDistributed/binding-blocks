@@ -8,7 +8,9 @@ import Binding, { BindingProps } from "../Binding";
 import type DataStore from "../../classes/DataStore";
 
 interface ButtonProps
-  extends BindingProps<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">> {
+  extends BindingProps<
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">
+  > {
   onClick: (e: MouseEvent<HTMLButtonElement>, store: DataStore) => void;
 }
 
