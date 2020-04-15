@@ -147,4 +147,27 @@ describe("DataStore", () => {
     store.get("name").set("David");
     expect(onChange.mock.calls[2][0]).toBe("David");
   });
+
+  it("release", () => {
+    const store = DataStore.createStore({
+      name: "John",
+      skills: ["js", "css"],
+    });
+    const onRootChange = jest.fn();
+    const onReleasedChange = jest.fn();
+    store.on("change", onRootChange);
+    store.get("skills").on("change", onReleasedChange);
+
+    store.set("skills", ["ruby"]);
+    expect(onReleasedChange.mock.calls.length).toBe(1);
+    expect(onRootChange.mock.calls.length).toBe(1);
+
+    store.set("skills", ["html"]);
+    expect(onReleasedChange.mock.calls.length).toBe(1);
+    expect(onRootChange.mock.calls.length).toBe(2);
+
+    store.set("skills", "none");
+    expect(onReleasedChange.mock.calls.length).toBe(1);
+    expect(onRootChange.mock.calls.length).toBe(3);
+  });
 });

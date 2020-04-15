@@ -1,65 +1,44 @@
 import { uuidv4 } from "../utils/uuid";
+import StoreEvent from "./StoreEvent";
 
 type PrimitiveTypes = string | number | boolean | null;
+
+export type DataValues =
+  | PrimitiveTypes
+  | DataValues[]
+  | { [key: string]: DataValues };
+
 type MapCallbackFn<T> = (
   value: DataStore,
   index: number,
   array: DataStore[]
 ) => T;
 
-type PlainValueType =
-  | PrimitiveTypes
-  | PlainValueType[]
-  | { [key: string]: PlainValueType };
+type Mutator = (value: DataValues) => DataValues;
 
-export type DataValues = PlainValueType;
+enum HierarchyDirection {
+  INCLUSIVE_UP,
+  EXCLUSIVE_UP,
+  INCLUSIVE_DOWN,
+  EXCLUSIVE_DOWN,
+}
 
 enum EventType {
+  ALL = "all",
   CHANGE = "change",
   DIDCHANGE = "didchange",
 }
 
 interface Listener {
   eventName: string;
-  callback: (e: DataStoreEvent) => void;
+  callback: (e: StoreEvent) => void;
 }
-
-class DataStoreEvent {
-  type: string;
-
-  stopped: boolean;
-
-  target: DataStore;
-
-  parent: DataStore;
-
-  root: DataStore;
-
-  constructor(type: string, target: DataStore) {
-    this.type = type;
-    this.target = target;
-    this.parent = target.parent;
-    this.root = target.root;
-
-    this.stopped = false;
-  }
-
-  stopPropagation = (): void => {
-    this.stopped = true;
-  };
-
-  isStopped = (): boolean => this.stopped;
-}
-
-type Mutator<T = PlainValueType> = (value: PlainValueType) => PlainValueType;
 
 class DataStore {
-  root: DataStore;
-
-  parent: DataStore;
-
   uuid: string;
 
+  root: DataStore;
+  parent: DataStore;
   initialValues: DataValues;
 
   constructor(values?: DataValues, root?: DataStore, parent?: DataStore) {
@@ -151,7 +130,7 @@ class DataStore {
     }
   }
 
-  protected createChildStore(value: PlainValueType): DataStore {
+  protected createChildStore(value: DataValues): DataStore {
     return new DataStore(value, this.getRoot(), this);
   }
 
@@ -192,18 +171,15 @@ class DataStore {
     return null;
   }
 
-  public set(value: PlainValueType): DataStore;
+  public set(value: DataValues): DataStore;
 
-  public set(name: string, value: PlainValueType): DataStore;
+  public set(name: string, value: DataValues): DataStore;
 
-  public set(index: number, value: PlainValueType): DataStore;
+  public set(index: number, value: DataValues): DataStore;
 
-  public set(key: number | string, value: PlainValueType): DataStore;
+  public set(key: number | string, value: DataValues): DataStore;
 
-  public set(
-    key: string | number | PlainValueType,
-    value?: PlainValueType
-  ): DataStore {
+  public set(key: string | number | DataValues, value?: DataValues): DataStore {
     if (value === undefined) {
       this.initData(key);
       this.setTimestamp().emit(EventType.CHANGE);
@@ -232,16 +208,6 @@ class DataStore {
     return this;
   }
 
-  public reset(): DataStore {
-    const listeners = this.getChildListeners();
-
-    this.initData(this.initialValues);
-
-    const e = new DataStoreEvent(EventType.CHANGE, this);
-    this.dispatch(e, listeners);
-    return this;
-  }
-
   public unset(key: string): DataStore {
     if (this.storeMap) {
       const target = this.get(key);
@@ -254,24 +220,32 @@ class DataStore {
     return this;
   }
 
-  public toObject<T = PlainValueType>(): T;
+  public reset(): DataStore {
+    const listeners = this.getListeners(HierarchyDirection.EXCLUSIVE_DOWN);
 
-  public toObject(): PlainValueType {
+    this.initData(this.initialValues);
+
+    const e = new StoreEvent(EventType.CHANGE, this);
+    this.dispatch(e, listeners);
+    return this;
+  }
+
+  public toObject<T = DataValues>(): T;
+
+  public toObject(): DataValues {
     if (this.storeArray) {
       return this.storeArray.map((value) => {
         return value instanceof DataStore
           ? value.toObject()
-          : (value as PlainValueType);
+          : (value as DataValues);
       });
     }
     if (this.storeMap) {
       return Array.from(this.storeMap).reduce<{
-        [key: string]: PlainValueType;
+        [key: string]: DataValues;
       }>((obj, [key, value]) => {
         obj[key] =
-          value instanceof DataStore
-            ? value.toObject()
-            : (value as PlainValueType);
+          value instanceof DataStore ? value.toObject() : (value as DataValues);
         return obj;
       }, {});
     }
@@ -320,7 +294,7 @@ class DataStore {
     }
   }
 
-  public push(value: PlainValueType): void {
+  public push(value: DataValues): void {
     if (this.storeArray) {
       this.storeArray.push(this.createChildStore(value));
       this.setTimestamp().emit(EventType.CHANGE);
@@ -377,24 +351,35 @@ class DataStore {
     return this;
   }
 
-  public emit(eventName: Listener["eventName"]): DataStore {
-    const listeners = this.getParentListeners(true);
+  /**
+   * Create a new event to dispatch
+   */
+  public emit(
+    eventName: Listener["eventName"],
+    direction?: HierarchyDirection
+  ): DataStore {
+    const listeners = this.getListeners(direction);
 
-    const e = new DataStoreEvent(eventName, this);
+    const e = new StoreEvent(eventName, this);
     this.dispatch(e, listeners);
 
     return this;
   }
 
+  /**
+   * Notify released instances and their children
+   * (shortcut)
+   */
   protected release(): DataStore {
-    const listeners = this.getChildListeners(true);
+    this.emit(EventType.CHANGE, HierarchyDirection.INCLUSIVE_DOWN);
 
-    const e = new DataStoreEvent(EventType.CHANGE, this);
-    this.dispatch(e, listeners);
     return this;
   }
 
-  protected dispatch(e: DataStoreEvent, listeners: Listener[]): void {
+  /**
+   * Dispatch an event to the listeners
+   */
+  protected dispatch(e: StoreEvent, listeners: Listener[]): void {
     listeners.forEach(function (listener: Listener): void {
       if (e.isStopped()) return this;
 
@@ -402,6 +387,25 @@ class DataStore {
         listener.callback(e);
       }
     });
+  }
+
+  public getListeners(direction?: HierarchyDirection): Listener[] {
+    let listeners: Listener[];
+
+    const dir: HierarchyDirection =
+      direction || HierarchyDirection.INCLUSIVE_UP;
+
+    if (dir === HierarchyDirection.INCLUSIVE_UP) {
+      listeners = this.getParentListeners(true);
+    } else if (dir === HierarchyDirection.INCLUSIVE_DOWN) {
+      listeners = this.getChildListeners(true);
+    } else if (dir === HierarchyDirection.EXCLUSIVE_UP) {
+      listeners = this.getParentListeners();
+    } else if (dir === HierarchyDirection.EXCLUSIVE_DOWN) {
+      listeners = this.getChildListeners();
+    }
+
+    return listeners;
   }
 
   public getParentListeners(include?: boolean): Listener[] {
@@ -419,21 +423,13 @@ class DataStore {
 
     if (this.storeArray) {
       return this.storeArray.reduce(
-        (listeners, store) => [
-          ...listeners,
-          ...store.listeners,
-          ...store.getChildListeners(),
-        ],
+        (listeners, store) => [...listeners, ...store.getChildListeners(true)],
         thisListeners
       );
     }
     if (this.storeMap) {
       return Array.from(this.storeMap.values()).reduce(
-        (listeners, store) => [
-          ...listeners,
-          ...store.listeners,
-          ...store.getChildListeners(),
-        ],
+        (listeners, store) => [...listeners, ...store.getChildListeners(true)],
         thisListeners
       );
     }
@@ -454,14 +450,11 @@ class DataStore {
    * `people.mutate('age', addOne)` or
    * `team.mutate('score', addOne)` or whatever...
    */
-  public mutate<T>(mutator: Mutator<T>): DataStore;
+  public mutate(mutator: Mutator): DataStore;
 
-  public mutate<T>(key: string | number, mutator: Mutator<T>): DataStore;
+  public mutate(key: string | number, mutator: Mutator): DataStore;
 
-  public mutate<T>(
-    key: string | number | Mutator<T>,
-    mutator?: Mutator<T>
-  ): DataStore {
+  public mutate(key: string | number | Mutator, mutator?: Mutator): DataStore {
     if (mutator) {
       if (typeof key === "string" || typeof key === "number") {
         const v = this.get(key);
