@@ -148,6 +148,46 @@ describe("DataStore", () => {
     expect(onChange.mock.calls[2][0]).toBe("David");
   });
 
+  it("StoreEvent stopPropagation", () => {
+    const store = DataStore.createStore({
+      level1: {
+        level2: {
+          name: "Mark",
+        },
+      },
+    });
+    const onL1Change = jest.fn();
+    const onL2Change = jest.fn();
+
+    store.get("level1").on("change", onL1Change);
+    store.get("level1").get("level2").on("change", onL2Change);
+
+    store.get("level1").get("level2").set("name", "David");
+    expect(onL1Change.mock.calls.length).toBe(1);
+    expect(onL2Change.mock.calls.length).toBe(1);
+
+    store.get("level1").get("level2").set("name", "Paul");
+    expect(onL1Change.mock.calls.length).toBe(2);
+    expect(onL2Change.mock.calls.length).toBe(2);
+
+    store
+      .get("level1")
+      .get("level2")
+      .on("change", (e) => e.stopPropagation());
+
+    store.get("level1").get("level2").set("name", "Paul");
+    expect(onL1Change.mock.calls.length).toBe(2);
+    expect(onL2Change.mock.calls.length).toBe(3);
+
+    store.get("level1").get("level2").set("name", "John");
+    expect(onL1Change.mock.calls.length).toBe(2);
+    expect(onL2Change.mock.calls.length).toBe(4);
+
+    store.get("level1").set("level2", null);
+    expect(onL1Change.mock.calls.length).toBe(3);
+    expect(onL2Change.mock.calls.length).toBe(5);
+  });
+
   it("release", () => {
     const store = DataStore.createStore({
       name: "John",
