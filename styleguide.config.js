@@ -38,6 +38,12 @@ module.exports = {
     {
       name: "Form",
       content: "demo/Form.md",
+      sections: [
+        {
+          name: "Tables",
+          content: "demo/Form.Table.md",
+        },
+      ],
     },
   ],
   pagePerSection: true,

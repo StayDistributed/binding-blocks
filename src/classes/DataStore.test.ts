@@ -1,4 +1,4 @@
-import DataStore from "./DataStore";
+import DataStore, { HierarchyDirection } from "./DataStore";
 
 describe("DataStore", () => {
   it("init", () => {
@@ -146,6 +146,39 @@ describe("DataStore", () => {
      */
     store.get("name").set("David");
     expect(onChange.mock.calls[2][0]).toBe("David");
+  });
+
+  it("listeners", () => {
+    const store = DataStore.createStore({
+      name: "John",
+    });
+
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+    store.on("change", onChange1);
+    store.get("name").on("change", onChange2);
+
+    expect(store.getListeners(HierarchyDirection.INCLUSIVE_UP).length).toBe(1);
+    expect(store.getListeners(HierarchyDirection.INCLUSIVE_DOWN).length).toBe(
+      2
+    );
+    expect(store.getListeners(HierarchyDirection.EXCLUSIVE_UP).length).toBe(0);
+    expect(store.getListeners(HierarchyDirection.EXCLUSIVE_DOWN).length).toBe(
+      1
+    );
+
+    expect(
+      store.get("name").getListeners(HierarchyDirection.INCLUSIVE_UP).length
+    ).toBe(2);
+    expect(
+      store.get("name").getListeners(HierarchyDirection.INCLUSIVE_DOWN).length
+    ).toBe(1);
+    expect(
+      store.get("name").getListeners(HierarchyDirection.EXCLUSIVE_UP).length
+    ).toBe(1);
+    expect(
+      store.get("name").getListeners(HierarchyDirection.EXCLUSIVE_DOWN).length
+    ).toBe(0);
   });
 
   it("StoreEvent stopPropagation", () => {

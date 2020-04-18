@@ -16,7 +16,7 @@ type MapCallbackFn<T> = (
 
 type Mutator = (value: DataValues) => DataValues;
 
-enum HierarchyDirection {
+export enum HierarchyDirection {
   INCLUSIVE_UP,
   EXCLUSIVE_UP,
   INCLUSIVE_DOWN,

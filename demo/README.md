@@ -1,3 +1,10 @@
+[![NPM](https://img.shields.io/npm/v/binding-blocks.svg)](https://www.npmjs.org/package/binding-blocks)
+[![Travis CI](https://travis-ci.com/staydistributed/binding-blocks.svg?branch=master)](https://travis-ci.com/staydistributed/binding-blocks)
+[![Coveralls](https://coveralls.io/repos/github/StayDistributed/binding-blocks/badge.svg?branch=master)](https://coveralls.io/github/StayDistributed/binding-blocks?branch=master)
+[![Codefactor](https://www.codefactor.io/repository/github/staydistributed/binding-blocks/badge)](https://www.codefactor.io/repository/github/staydistributed/binding-blocks)
+[![Bettercodehub](https://bettercodehub.com/edge/badge/StayDistributed/binding-blocks?branch=master)](https://bettercodehub.com/)
+[![Discord](https://img.shields.io/discord/699514717768515645)](https://discord.gg/q4vx7ej)
+
 Create components with easy and declarative data binding
 
 ### Install
