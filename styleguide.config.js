@@ -32,12 +32,36 @@ module.exports = {
 
   sections: [
     {
-      name: "Binding Blocks",
-      content: "demo/README.md",
+      name: "Introduction",
+      content: "demo/INTRODUCTION.md",
+      sections: [
+        {
+          name: "Hello World",
+          content: "demo/HelloWorld.md",
+        },
+      ],
     },
     {
       name: "Supported data types",
       content: "demo/SupportedDataTypes.md",
+      sections: [
+        {
+          name: "Strings and Numbers",
+          content: "demo/DataTypes.1.md",
+        },
+        {
+          name: "Objects",
+          content: "demo/DataTypes.2.md",
+        },
+        {
+          name: "Arrays",
+          content: "demo/DataTypes.3.md",
+        },
+        {
+          name: "Mixed",
+          content: "demo/DataTypes.4.md",
+        },
+      ],
     },
     {
       name: "Store",
@@ -55,7 +79,6 @@ module.exports = {
       ],
     },
   ],
-  pagePerSection: true,
 
   /**
    * configs

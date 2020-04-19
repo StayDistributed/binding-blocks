@@ -11,7 +11,7 @@ interface ButtonProps
   extends BindingProps<
     Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">
   > {
-  onClick: (e: MouseEvent<HTMLButtonElement>, store: DataStore) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>, store: DataStore) => void;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({

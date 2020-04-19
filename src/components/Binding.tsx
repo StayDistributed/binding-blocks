@@ -16,10 +16,12 @@ const Binding: FunctionComponent<DataStoreProps> = (props) => {
       ? (props.children as Function)(handler.store)
       : props.children;
 
-  const body = handler.isRoot ? (
-    <form {...handler.formProps}>{children}</form>
-  ) : props.as ? (
-    <props.as>{children}</props.as>
+  const body = props.as ? (
+    props.as === "form" ? (
+      <form {...handler.formProps}>{children}</form>
+    ) : (
+      <props.as>{children}</props.as>
+    )
   ) : (
     children
   );
@@ -30,5 +32,9 @@ const Binding: FunctionComponent<DataStoreProps> = (props) => {
     body
   );
 };
+
+export const Form: FunctionComponent<DataStoreProps> = (props) => (
+  <Binding as="form" {...props} />
+);
 
 export default Binding;

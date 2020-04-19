@@ -1,6 +1,6 @@
 import React from "react";
 import { act, create, ReactTestRenderer } from "react-test-renderer";
-import { Binding as Form, Value } from "../src";
+import { Form, Value } from "../src";
 
 describe("Form", () => {
   it("Value", () => {

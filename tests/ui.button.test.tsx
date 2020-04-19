@@ -1,6 +1,6 @@
 import React from "react";
 import { act, create, ReactTestRenderer } from "react-test-renderer";
-import { Binding as Form, Button } from "../src";
+import { Form, Button } from "../src";
 
 describe("Button", () => {
   it("onClick", () => {

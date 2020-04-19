@@ -5,7 +5,7 @@ import {
   ReactTestRenderer,
   ReactTestRendererJSON,
 } from "react-test-renderer";
-import { Binding as Form, ForEach } from "../src";
+import { Form, ForEach } from "../src";
 
 describe("Form", () => {
   it("Foreach string", () => {

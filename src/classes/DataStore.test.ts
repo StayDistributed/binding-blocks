@@ -221,6 +221,19 @@ describe("DataStore", () => {
     expect(onL2Change.mock.calls.length).toBe(5);
   });
 
+  it("reset", () => {
+    const store = DataStore.createStore({
+      name: "John",
+      skills: ["js", "css"],
+    });
+
+    store.set("skills", ["ruby"]);
+    expect(store.get("skills").toJSON()).toMatchObject(["ruby"]);
+
+    store.reset();
+    expect(store.get("skills").toJSON()).toMatchObject(["js", "css"]);
+  });
+
   it("release", () => {
     const store = DataStore.createStore({
       name: "John",

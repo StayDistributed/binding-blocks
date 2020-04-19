@@ -1,6 +1,6 @@
 import React, { FormEvent, ReactElement } from "react";
 import { act, create, ReactTestRenderer } from "react-test-renderer";
-import { Binding as Form } from "../src";
+import { Form } from "../src";
 
 describe("Form", () => {
   it("Form", () => {
@@ -139,12 +139,13 @@ describe("Form", () => {
       );
     });
     expect(form.toJSON().children).toBeTruthy();
+    expect(form.toJSON().children[0].type).toBe("form");
     expect(form.toJSON().props.debugstore.get("location")).toBeTruthy();
     expect(
       form.toJSON().props.debugstore.get("location").toJSON()
     ).toMatchObject(initialValues.location);
     act(() => {
-      const input = form.toJSON().children[0];
+      const input = form.toJSON().children[0].children[0];
       if (typeof input !== "string") {
         input.props.onChange({ currentTarget: { value: "Rome" } });
       }

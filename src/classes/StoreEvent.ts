@@ -20,12 +20,6 @@ export default class StoreEvent {
   }
 
   /**
-   * Factory method
-   */
-  static create = (params: { type: string; target: Store }): StoreEvent =>
-    new StoreEvent(params.type, params.target);
-
-  /**
    * Event propagation
    */
   stopped: boolean;

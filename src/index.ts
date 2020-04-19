@@ -6,7 +6,7 @@ import useDataStore from "./hooks/useDataStore";
 /**
  * Core
  */
-import Binding from "./components/Binding";
+import Binding, { Form } from "./components/Binding";
 import Value from "./components/Value";
 import If from "./components/If";
 import ForEach from "./components/ForEach";
@@ -23,4 +23,15 @@ import Log from "./components/ui/Log";
  */
 const With = Binding;
 
-export { useDataStore, Binding, With, Value, If, ForEach, Input, Button, Log };
+export {
+  useDataStore,
+  Binding,
+  With,
+  Value,
+  If,
+  ForEach,
+  Form,
+  Input,
+  Button,
+  Log,
+};

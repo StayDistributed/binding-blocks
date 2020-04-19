@@ -221,7 +221,7 @@ class DataStore {
   }
 
   public reset(): DataStore {
-    const listeners = this.getListeners(HierarchyDirection.EXCLUSIVE_DOWN);
+    const listeners = this.getListeners(HierarchyDirection.INCLUSIVE_DOWN);
 
     this.initData(this.initialValues);
 
