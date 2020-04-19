@@ -5,7 +5,8 @@
 [![Bettercodehub](https://bettercodehub.com/edge/badge/StayDistributed/binding-blocks?branch=master)](https://bettercodehub.com/)
 [![Discord](https://img.shields.io/discord/699514717768515645)](https://discord.gg/q4vx7ej)
 
-Create components with easy and declarative data binding
+Create components with easy and declarative data binding.<br />
+Manage state of small applications, bind your components to any JSON-like data structure.
 
 ### Install
 
@@ -33,27 +34,9 @@ const Comp = () => {
 }
 ```
 
-Manage state of small applications, bind your components to any JSON-like data structure.
+## Hello World
 
-```jsx
-import { Binding, Value } from '../src';
-
-const someData = {
-  title: 'Binding Blocks',
-  subtitle: 'easy and declarative data bindings'
-};
-
-<Binding data={someData}>
-  <h1><Value name="title" /></h1>
-  <h3><Value name="subtitle" /></h3>
-</Binding>;
-```
-
----
-
-### Hello world
-
-Suppose you have a data-structure like this
+Suppose our application data is like the following:
 
 ```js static
 const data = {
@@ -68,8 +51,7 @@ const data = {
   ],
 };
 ```
-
-...and you want to build a component that renders city/country:
+We want to build a reusable component that renders city/country:
 
 ```jsx static
 import { Value } from 'binding-blocks';
@@ -86,29 +68,27 @@ const Place = () => (
 );
 ```
 
-You can reuse that component, and values will be based on where it is inserted in the hierarchy:
+We need to bind `city` and `country` values to different point in the data-structure,<br />
+Once inside `currentLocation` node and 3 times inside `last3VisitedCities`.<br />
+
+We can use the `name` attribute to change the scope the values are binded with.
 
 ```jsx static
-import { Binding, ForEach } from 'binding-blocks';
-import Place from './components/Place';
-import data from './data/cities';
-
-<Binding data={data}>
-
   <Binding name="currentLocation">
-    <Place />
+  // components rendered here are binded to `currentLocation`
   </Binding>
-
-  <ForEach name="last3VisitedCities">
-    <Place />
-  </ForEach>
-
-</Binding>
 ```
 
-#### This is the result:
+```jsx static
+  <ForEach name="last3VisitedCities">
+  // components rendered here are binded to every `last3VisitedCities`
+  </ForEach>
+```
 
-```js
+### Put everything together
+(...with the help of some bootstrap 4 utils)
+
+```jsx static
 import { Binding, ForEach } from '../src';
 import Place from './components/Place';
 import data from './data/cities';
@@ -131,99 +111,25 @@ import data from './data/cities';
 </Binding>
 ```
 
----
-
-### Arrays, Objects, Strings, Numbers, Booleans ...
-
-Supports any data types, with any levels
-
-```js static
-const data = {
-  firstName: 'Michele',
-  age: 36,
-  location: {
-    city: 'Milan',
-    country: 'Italy'
-  },
-  skills: [
-    'react',
-    'design-patterns'
-  ],
-};
-```
-
-Declarative components:
-
-```jsx static
-<Binding data={data}>
-  <th>First Name:</th>
-  <td><Value name="firstName" /></td>
-
-  <th>Age:</th>
-  <td><Value name="age" /></td>
-
-  <th>Location:</th>
-  <td>
-    <Binding name="location">
-      <div>City: <Value name="city" /></div>
-      <div>Country: <Value name="country" /></div>
-    </Binding>
-  </td>
-
-  <th>Skills:</th>
-  <td>
-    <ForEach name="skills">
-      <li><Value /></li>
-    </ForEach>
-  </td>
-</Binding>
-```
-#### This is the result:
-
-```js
-import { Binding, Value, ForEach } from '../src';
-
-const data = {
-  firstName: 'Michele',
-  age: 36,
-  location: {
-    city: 'Milan',
-    country: 'Italy'
-  },
-  skills: [
-    'react',
-    'design-patterns'
-  ],
-};
+```js noeditor
+import { Binding, ForEach } from '../src';
+import Place from './components/Place';
+import data from './data/cities';
 
 <Binding data={data}>
-  <table class="table"><tbody>
-    <tr>
-      <th>First Name:</th>
-      <td><Value name="firstName" /></td>
-    </tr>
-    <tr>
-      <th>Age:</th>
-      <td><Value name="age" /></td>
-    </tr>
-    <tr>
-      <th>Location:</th>
-      <td>
-        <Binding name="location">
-          <div>City: <Value name="city" /></div>
-          <div>Country: <Value name="country" /></div>
-        </Binding>
-      </td>
-    </tr>
-    <tr>
-      <th>Skills:</th>
-      <td>
-        <ForEach name="skills">
-          <li><Value /></li>
-        </ForEach>
-      </td>
-    </tr>
-  </tbody></table>
+  <div class="d-md-flex">
+    <div class="mr-3 p-3 border">
+      <h5>Current Location</h5>
+      <Binding name="currentLocation">
+        <Place />
+      </Binding>
+    </div>
+    <div class="mr-3 p-3 border">
+      <h5>Last visited cities</h5>
+      <ForEach name="last3VisitedCities">
+        <Place />
+      </ForEach>
+    </div>
+  </div>
 </Binding>
 ```
-

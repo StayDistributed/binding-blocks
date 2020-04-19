@@ -22,7 +22,7 @@ React 2-way data binding to easily manage complex forms and data structures.
 [discord-badge]: https://img.shields.io/discord/699514717768515645
 [discord]: https://discord.gg/q4vx7ej
 
---
+---
 
 ## Install
 

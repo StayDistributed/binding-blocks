@@ -36,6 +36,15 @@ module.exports = {
       content: "demo/README.md",
     },
     {
+      name: "Supported data types",
+      content: "demo/SupportedDataTypes.md",
+    },
+    {
+      name: "Store",
+      content: "demo/Store.md",
+      exampleMode: "expand",
+    },
+    {
       name: "Form",
       content: "demo/Form.md",
       sections: [
