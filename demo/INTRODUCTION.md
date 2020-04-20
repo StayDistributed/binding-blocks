@@ -25,7 +25,7 @@ import { Binding, Value } from 'binding-blocks';
 
 const someData = {
   title: 'Binding Blocks',
-  subtitle: 'easy and declarative data bindings'
+  subtitle: 'Manage sub-states of your application'
 };
 
 

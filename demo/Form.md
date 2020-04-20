@@ -1,109 +1,48 @@
-### Basic form
+`binding-blocks` is designed for building Forms.<br />
+The speed of implementation and readability of forms is core features of the lib.
+
+Using `<Form>`, the root component will be wrapped in an HTML `<form>` element, and all forms'features will be enabled.
+```jsx static
+<Form data={...}>
+</Form>
+
+<Form data={...}>
+  {store => {
+    // do something with store
+  }}
+</Form>
+```
+
+`<Input>` renders a React controlled input.<br />
+We can use `name` prop to bind Input value to a position in state tree, or use `<With>` as seen before.
+```jsx static
+<Input name="someprop" />
+
+<With name="someprop">
+  <Input />
+</With>
+```
+
+`<Button>` renders an HTML `<button>` element, with a special `onClick` prop.<br />
+```jsx static
+<Button onClick={(e: MouseEvent<HTMLButtonElement>, store: DataStore) => {}}></Button>
+```
+
+- `e` is a MouseEvent, (with preventDefault, target, etc...)
+- `store` is the _binding-blocks_ Store
 
 ```jsx static
-<Binding data={{email: 'info@example.com', password: 'secret'}}>
-  <Input name="email" type="email" />
-  <Input name="password" type="password" />
-  <Log />
-</Binding>
-```
+<Form
+  onSubmit={(e: FormEvent<HTMLFormElement>, store: DataStore) => {}}
+  onReset={(e: FormEvent<HTMLFormElement>, store: DataStore) => {}}
+>
 
-```jsx
-import { Binding, Input, Value, Log } from '../src';
+  {/* Inside <Form> Button's click will trigger Form.onSubmit */}
+  <Button>Submit</Button>
 
-const data = {
-  email: 'info@example.com',
-  password: 'secret'
-};
+  {/* Inside <Form> Button supports type="reset"
+      to reset all the changes and trigger Form.onReset */}
+  <Button type="reset">Reset</Button>
 
-<Binding data={data}>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label>Email</label>
-      <Input name="email" type="email" class="form-control" />
-    </div>
-    <div class="form-group col-md-4">
-      <label>Password</label>
-      <Input name="password" type="password" class="form-control" />
-    </div>
-    <div class="form-group col-md-4">
-      <label>Values:</label>
-      <Log />
-    </div>
-  </div>
-</Binding>
-```
-
-### Write lists faster
-
-```jsx static
-const data = {
-  name: 'Mark',
-  skills: ['js', 'css']
-};
-
-<Binding data={data}>
-  <label>Name</label>
-  <Input name="name" class="form-control" />
-
-  <label>Skills</label>
-  <ForEach name="skills">
-    <Input />
-    <Button onClick={(e, store) => store.removeFromParent()} />
-  </ForEach>
-
-  <Button onClick={(e, store) => store.get("skills").push("New skill")}>
-    Add skill
-  </Button>
-</Binding>
-```
-
-```jsx
-import { Binding, ForEach, Input, Button, Log } from '../src';
-
-const data = {
-  name: 'Mark',
-  skills: ['js', 'css']
-};
-
-<Binding data={data}>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label>Name</label>
-      <Input name="name" class="form-control" />
-    </div>
-    <div class="form-group col-md-4">
-      <label>Skills</label>
-      <ul>
-        <ForEach name="skills">
-          <li>
-            <Input />
-            <Button
-              onClick={(e, store) => {
-                e.preventDefault();
-                store.removeFromParent();
-              }}
-            >
-              -
-            </Button>
-          </li>
-        </ForEach>
-        <li>
-          <Button
-            onClick={(e, store) => {
-              e.preventDefault();
-              store.get("skills").push("New skill");
-            }}
-          >
-            Add skill
-          </Button>
-        </li>
-      </ul>
-    </div>
-    <div class="form-group col-md-4">
-      <label>Values:</label>
-      <Log />
-    </div>
-  </div>
-</Binding>
+</Form>
 ```

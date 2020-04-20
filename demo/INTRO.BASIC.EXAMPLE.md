@@ -1,4 +1,6 @@
-Suppose our application data is like the following:
+In this basic example we'll manage a portion of the state of our App to represents our current location and the last 3 visited cities:
+
+### Our state
 
 ```js static
 const data = {
@@ -13,7 +15,10 @@ const data = {
   ],
 };
 ```
+
 We want to build a reusable component that renders city/country:
+
+### Our `<Place />` React component
 
 ```jsx static
 import { Value } from 'binding-blocks';
@@ -30,73 +35,52 @@ const Place = () => (
 );
 ```
 
-We need to bind `city` and `country` values to different point in the data-structure,<br />
-Once inside `currentLocation` node and 3 times inside `last3VisitedCities`.<br />
+We use `<Value name="" />` to render `city` and `country` values,<br />
+One refers to `currentLocation` node and the other refers to `last3VisitedCities`.<br />
 
-We can use the `name` attribute to change the scope the values are binded with.
+`<Place />` will render different values based on its location in the components' hierarchy.<br />
+`binding-blocks` perfectly fit the [Thinking in React](https://reactjs.org/docs/thinking-in-react.html) directives.
+
+We will use the utils `With` and `ForEach` to change the position in the state tree.
 
 ```jsx static
-  <Binding name="currentLocation">
   // components rendered here are binded to `currentLocation`
-  </Binding>
-```
+  <With name="currentLocation">
+  </With>
 
-```jsx static
-  <ForEach name="last3VisitedCities">
   // components rendered here are binded to every `last3VisitedCities`
+  <ForEach name="last3VisitedCities">
   </ForEach>
 ```
 
 ### Put everything together
 (...with the help of some bootstrap 4 utils)
 
-```jsx static
-import { Binding, ForEach } from '../src';
-import Place from './components/Place';
-import data from './data/cities';
-
-<Binding data={data}>
-  <div class="d-md-flex">
-    <div class="mr-3 p-3 border">
-      <h5>Current Location</h5>
-      <Binding name="currentLocation">
-        <Place />
-      </Binding>
-    </div>
-    <div class="mr-3 p-3 border">
-      <h5>Last visited cities</h5>
-      <ForEach name="last3VisitedCities">
-        <Place />
-      </ForEach>
-    </div>
-  </div>
-</Binding>
-```
-
-## No wiring props
-
-Notice that there is no wiring props between components.<br />
+Notice that there is __#NoWiringProps__ between components.<br />
 Every component can be declared in separated files and included in the application without passing any props to it.
 
-```js noeditor
-import { Binding, ForEach } from '../src';
+```jsx
+import { Binding, With, ForEach } from '../src';
 import Place from './components/Place';
 import data from './data/cities';
 
 <Binding data={data}>
-  <div class="d-md-flex">
-    <div class="mr-3 p-3 border">
+  <div class="row">
+
+    <div class="col-md-6">
       <h5>Current Location</h5>
-      <Binding name="currentLocation">
+      <With name="currentLocation">
         <Place />
-      </Binding>
+      </With>
     </div>
-    <div class="mr-3 p-3 border">
+
+    <div class="col-md-6">
       <h5>Last visited cities</h5>
       <ForEach name="last3VisitedCities">
         <Place />
       </ForEach>
     </div>
+
   </div>
 </Binding>
 ```

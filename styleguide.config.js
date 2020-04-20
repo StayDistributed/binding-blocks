@@ -36,8 +36,9 @@ module.exports = {
       content: "demo/INTRODUCTION.md",
       sections: [
         {
-          name: "Hello World",
-          content: "demo/HelloWorld.md",
+          name: "Basic Example",
+          content: "demo/INTRO.BASIC.EXAMPLE.md",
+          exampleMode: "expand",
         },
       ],
     },
@@ -78,34 +79,24 @@ module.exports = {
       exampleMode: "expand",
     },
     {
-      name: "Supported data types",
-      content: "demo/SupportedDataTypes.md",
-      sections: [
-        {
-          name: "Strings and Numbers",
-          content: "demo/DataTypes.1.md",
-        },
-        {
-          name: "Objects",
-          content: "demo/DataTypes.2.md",
-        },
-        {
-          name: "Arrays",
-          content: "demo/DataTypes.3.md",
-        },
-        {
-          name: "Mixed",
-          content: "demo/DataTypes.4.md",
-        },
-      ],
+      name: "Advanced Example",
+      content: "demo/ADVANCED.EXAMPLE.md",
+      exampleMode: "expand",
     },
     {
-      name: "Form",
+      name: "Forms",
       content: "demo/Form.md",
+      exampleMode: "expand",
       sections: [
         {
-          name: "Tables",
+          name: "Basic",
+          content: "demo/Form.Basic.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "Table",
           content: "demo/Form.Table.md",
+          exampleMode: "expand",
         },
       ],
     },

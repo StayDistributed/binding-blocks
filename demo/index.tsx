@@ -3,16 +3,11 @@ import ReactDom from "react-dom";
 import { Binding, Input, ForEach, Button, Log } from "../src";
 
 const data = {
-  name: "Mark",
   skills: ["js", "css"],
 };
 
 ReactDom.render(
   <Binding data={data}>
-    <div>
-      <Input name="name" />
-      <Input name="name" />
-    </div>
     <ul>
       <ForEach name="skills">
         <li>
