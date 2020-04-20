@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { DataStoreHandler } from "../types";
 import useDataStore from "../hooks/useDataStore";
 
@@ -16,7 +16,12 @@ const If: FunctionComponent<IfProps> = (props) => {
     return null;
   }
 
-  return <>{props.children}</>;
+  const children =
+    typeof props.children === "function"
+      ? (props.children as Function)()
+      : props.children;
+
+  return children;
 };
 
 export default If;

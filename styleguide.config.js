@@ -58,16 +58,24 @@ module.exports = {
         {
           name: "<Value />",
           content: "demo/BLOCKS.VALUE.md",
+          exampleMode: "expand",
         },
         {
           name: "<If />",
           content: "demo/BLOCKS.IF.md",
+          exampleMode: "expand",
         },
         {
           name: "<ForEach />",
           content: "demo/BLOCKS.FOREACH.md",
+          exampleMode: "expand",
         },
       ],
+    },
+    {
+      name: "Store",
+      content: "demo/Store.md",
+      exampleMode: "expand",
     },
     {
       name: "Supported data types",
@@ -90,11 +98,6 @@ module.exports = {
           content: "demo/DataTypes.4.md",
         },
       ],
-    },
-    {
-      name: "Store",
-      content: "demo/Store.md",
-      exampleMode: "expand",
     },
     {
       name: "Form",

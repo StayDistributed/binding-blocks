@@ -42,10 +42,13 @@ import { Binding, Value } from '../src';
 import { blockBindingData } from './data/blocks';
 
 <Binding data={blockBindingData}>
+
   <p>Name: <Value name="firstName" /></p>
+
   <Binding name="location">
     <p>City: <Value name="city" /></p>
     <p>Country: <Value name="country" /></p>
   </Binding>
+
 </Binding>
 ```

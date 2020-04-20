@@ -10,6 +10,15 @@ Is also available an alias for Binding, to improve readability:
     // do something with the `location` node of the state tree
   }}
 </With>
+
+<With name="location">
+  <Value name="city" />
+  <With>
+    {store => {
+      // do something with the `location` node of the state tree
+    }}
+  </With>
+</With>
 ```
 
 ```jsx

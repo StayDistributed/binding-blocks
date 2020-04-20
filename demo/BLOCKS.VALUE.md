@@ -10,26 +10,22 @@ const data = {
   title: 'Example #1',
   person: {
     name: 'Michele',
-    car: {
-      color: 'grey'
-    }
   }
 };
 
 <Binding data={data}>
-  <h2><Value name="title" /></h2>
-  <div>
-    <With name="person">
-      <p>
-        Name: <Value name="name" /><br />
-        <With name="car">
-          Color with `name`: <Value name="color" /><br />
-          <With name="color">
-            Color without `name`: <Value /><br />
-          </With>
-        </With>
-      </p>
+  <Value name="title" />
+  <br />
+
+  <With name="person">
+    <Value name="name" />
+  </With>
+  <br />
+
+  <With name="person">
+    <With name="name">
+      <Value />
     </With>
-  </div>
+  </With>
 </Binding>
 ```
