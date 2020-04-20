@@ -1,4 +1,4 @@
-A *Store* holds the whole state tree of your application. The only way to change the state inside it is by using *Store* APIs:
+A *Store* holds the whole state of your components. The only way to change the state inside it is by using *Store* APIs:
 
 ```jsx
 import { Binding } from '../src';
@@ -59,7 +59,9 @@ const data = {
 
 ### `set()`
 
-Set a value on an existing Store
+Set a value on an existing Store, the following are valid:
+- `people.set('someAttr', 'new value');`
+- `people.get('someAttr').set('new value');`
 
 ```jsx
 import { Binding, Value, Log } from '../src';
@@ -77,7 +79,7 @@ function randomValue() {
     <div class="row">
       <div class="col-md-6">
         <div class="btn btn-primary" onClick={() => store.set('count', randomValue())}>Change #1</div>
-        <br />
+        <br /><br />
         <div class="btn btn-warning" onClick={() => store.get('count').set(randomValue())}>Change #2</div>
       </div>
       <div class="col-md-6">
@@ -129,7 +131,7 @@ Directly map an array, the following are the same:
 - `people.map('children', function(childStore) { });`
 - `people.get('children').map(function(childStore) { })`
 
-_Is suggested the use of `<ForEach />` DOM element, instead of using low-level map()_
+_Is suggested the use of `<ForEach />` block, instead of using low-level map()_
 
 ### `pop()` - `push()` - `remove(index)`
 (*array specific methods*)
@@ -155,6 +157,11 @@ const data = {
   {store => (
     <div class="row">
       <div class="col-md-6">
+        <div class="btn btn-primary" onClick={() => store.get('children').push({ name: 'Jenny' })}>{`push() -> add "Jenny"`}</div>
+        <br /><br />
+        <div class="btn btn-danger" onClick={() => store.get('children').pop()}>{`pop() -> remove last`}</div>
+      </div>
+      <div class="col-md-6">
         <ol>
           {store.map('children', (childStore, k) => {
             return (
@@ -162,11 +169,6 @@ const data = {
             )
           })}
         </ol>
-      </div>
-      <div class="col-md-6">
-        <div class="btn btn-primary" onClick={() => store.get('children').push({ name: 'Jenny' })}>{`push() -> add "Jenny"`}</div>
-        <br /><br />
-        <div class="btn btn-danger" onClick={() => store.get('children').pop()}>{`pop() -> remove last`}</div>
       </div>
     </div>
   )}

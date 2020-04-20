@@ -42,6 +42,34 @@ module.exports = {
       ],
     },
     {
+      name: "Blocks",
+      content: "demo/BLOCKS.md",
+      sections: [
+        {
+          name: "<Binding />",
+          content: "demo/BLOCKS.BINDING.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "<With />",
+          content: "demo/BLOCKS.WITH.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "<Value />",
+          content: "demo/BLOCKS.VALUE.md",
+        },
+        {
+          name: "<If />",
+          content: "demo/BLOCKS.IF.md",
+        },
+        {
+          name: "<ForEach />",
+          content: "demo/BLOCKS.FOREACH.md",
+        },
+      ],
+    },
+    {
       name: "Supported data types",
       content: "demo/SupportedDataTypes.md",
       sections: [
