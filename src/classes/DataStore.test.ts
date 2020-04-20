@@ -15,12 +15,14 @@ describe("DataStore", () => {
       c: "Mark",
       d: 34,
       e: (Symbol("Sym") as unknown) as string,
+      f: false,
     });
 
     expect(store.get("a").get("b").toJSON()).toBe("John");
     expect(store.get("c").toJSON()).toBe("Mark");
     expect(store.get("d").toJSON()).toBe(34);
     expect(store.get("e").toObject()).not.toBeDefined();
+    expect(store.get("f").toObject()).toBe(false);
   });
 
   it("get", () => {

@@ -28,17 +28,10 @@ export function useDataStore(props: DataStoreProps = {}): DataStoreHandler {
           props.onChange(store);
         }
       };
-      const onDidChange = (): void => {
-        if (props.onDidChange) {
-          props.onDidChange(store);
-        }
-      };
       eventEmitter.on("change", onChange);
-      eventEmitter.on("didchange", onDidChange);
 
       return (): void => {
         eventEmitter.off("change", onChange);
-        eventEmitter.off("didchange", onDidChange);
       };
     }
   }, [eventEmitter, store]);
@@ -75,17 +68,17 @@ export function useDataStore(props: DataStoreProps = {}): DataStoreHandler {
 
     if (props.onSubmit) {
       formProps.onSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        props.onSubmit(e);
+        props.onSubmit(e, store);
       };
     }
 
     formProps.onReset = (e: FormEvent<HTMLFormElement>): void => {
-      if (props.onReset) {
-        props.onReset(e);
-      }
-
       if (!e.isDefaultPrevented()) {
         store.reset();
+      }
+
+      if (props.onReset) {
+        props.onReset(e, store);
       }
     };
 

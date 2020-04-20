@@ -16,7 +16,9 @@ const Input: FunctionComponent<InputProps> = ({ name, ...props }) => {
           name={store.getPath(true)}
           value={store.toJSON<string>() || ""}
           onChange={(e): void => {
-            store.set(e.target.value);
+            store.set(
+              props.type === "checkbox" ? !!e.target.checked : e.target.value
+            );
           }}
           {...props}
         />

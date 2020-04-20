@@ -20,8 +20,8 @@ export type DataStoreElementProps<T> = Omit<T, "name"> & {
 /**
  * Native events
  */
-type OnSubmit = (e: FormEvent<HTMLFormElement>) => void;
-type OnReset = (e: FormEvent<HTMLFormElement>) => void;
+type OnSubmit = (e: FormEvent<HTMLFormElement>, store: DataStore) => void;
+type OnReset = (e: FormEvent<HTMLFormElement>, store: DataStore) => void;
 
 /**
  * Custom events

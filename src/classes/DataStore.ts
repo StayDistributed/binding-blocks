@@ -26,7 +26,6 @@ export enum HierarchyDirection {
 enum EventType {
   ALL = "all",
   CHANGE = "change",
-  DIDCHANGE = "didchange",
 }
 
 interface Listener {
@@ -249,7 +248,11 @@ class DataStore {
         return obj;
       }, {});
     }
-    if (this.storePrimitive || this.storePrimitive === 0) {
+    if (
+      this.storePrimitive ||
+      this.storePrimitive === 0 ||
+      this.storePrimitive === false
+    ) {
       return this.storePrimitive;
     }
   }
@@ -306,8 +309,9 @@ class DataStore {
       const deleted = this.storeArray.splice(index, 1);
 
       if (deleted.length) {
+        this.setTimestamp().emit(EventType.CHANGE);
         this.storeArray.forEach((store) => {
-          store.setTimestamp().emit(EventType.CHANGE);
+          store.emit(EventType.CHANGE, HierarchyDirection.EXCLUSIVE_DOWN);
         });
         deleted.forEach((store) => store.release());
       }
