@@ -38,7 +38,7 @@ const someData = {
 #### `<Binding name="" />`
 
 ```jsx
-import { Binding, Value } from '../src';
+import { Binding, Value } from 'binding-blocks';
 import { blockBindingData } from './data/blocks';
 
 <Binding data={blockBindingData}>

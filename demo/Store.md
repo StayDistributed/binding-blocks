@@ -1,7 +1,7 @@
 A *Store* holds the whole state of your components. The only way to change the state inside it is by using *Store* APIs:
 
 ```jsx
-import { Binding } from '../src';
+import { Binding } from 'binding-blocks';
 
 const data = {
   person: {
@@ -25,7 +25,7 @@ const data = {
 Get a child Store
 
 ```jsx
-import { Binding } from '../src';
+import { Binding } from 'binding-blocks';
 
 const data = {
   person: {
@@ -64,7 +64,7 @@ Set a value on an existing Store, the following are valid:
 - `people.get('someAttr').set('new value');`
 
 ```jsx
-import { Binding, Value, Log } from '../src';
+import { Binding, Value, Log } from 'binding-blocks';
 
 const data = {
   count: 999
@@ -99,7 +99,7 @@ function randomValue() {
 - Reset Store with initial values
 
 ```jsx
-import { Binding, Value, Log } from '../src';
+import { Binding, Value, Log } from 'binding-blocks';
 
 const data = {
   firstName: 'Michele',
@@ -141,7 +141,7 @@ _Is suggested the use of `<ForEach />` block, instead of using low-level map()_
 - Remove the item at `index` from array
 
 ```jsx
-import { Binding, ForEach } from '../src';
+import { Binding, ForEach } from 'binding-blocks';
 
 const data = {
   children: [{

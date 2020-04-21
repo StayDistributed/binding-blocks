@@ -60,7 +60,7 @@ Notice that there is __#NoWiringProps__ between components.<br />
 Every component can be declared in separated files and included in the application without passing any props to it.
 
 ```jsx
-import { Binding, With, ForEach } from '../src';
+import { Binding, With, ForEach } from 'binding-blocks';
 import Place from './components/Place';
 import data from './data/cities';
 

@@ -11,6 +11,31 @@ import DataStore from "../classes/DataStore";
 
 export const FormContext = createContext(null);
 
+export const getStoreFromContext = (
+  storeFromContext: DataStore,
+  props: DataStoreProps
+): DataStore | null =>
+  storeFromContext
+    ? props.name || props.name === 0
+      ? storeFromContext.get(props.name)
+        ? storeFromContext.get(props.name)
+        : null
+      : storeFromContext
+    : null;
+
+export const createStoreIfNotExists = (
+  storeFromContext: DataStore,
+  props: DataStoreProps
+): DataStore | null =>
+  storeFromContext
+    ? null
+    : props.data ||
+      props.data === 0 ||
+      props.data === false ||
+      props.data === ""
+    ? DataStore.createStore(props.data)
+    : DataStore.createStore({});
+
 export function useDataStore(props: DataStoreProps = {}): DataStoreHandler {
   const [timestamp, setTimestamp] = useState(0);
   const [store, setStore] = useState(null);
@@ -36,22 +61,12 @@ export function useDataStore(props: DataStoreProps = {}): DataStoreHandler {
     }
   }, [eventEmitter, store]);
 
-  const thisStore = storeFromContext
-    ? props.name || props.name === 0
-      ? storeFromContext.get(props.name)
-        ? storeFromContext.get(props.name)
-        : null
-      : storeFromContext
-    : null;
+  const thisStore = getStoreFromContext(storeFromContext, props);
 
   useEffect(() => {
     const store: DataStore = thisStore
       ? thisStore
-      : !storeFromContext
-      ? props.data || props.data === 0
-        ? DataStore.createStore(props.data)
-        : DataStore.createStore({})
-      : null;
+      : createStoreIfNotExists(storeFromContext, props);
 
     setStore(store);
 

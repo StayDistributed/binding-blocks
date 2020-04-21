@@ -1,24 +1,22 @@
 import React, {
   ReactElement,
   FunctionComponent,
-  InputHTMLAttributes,
+  TextareaHTMLAttributes,
 } from "react";
 import Binding, { BindingProps } from "../Binding";
 import type DataStore from "../../classes/DataStore";
 
-type InputProps = BindingProps<InputHTMLAttributes<HTMLInputElement>>;
+type TextareaProps = BindingProps<TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
-const Input: FunctionComponent<InputProps> = ({ name, ...props }) => {
+const Textarea: FunctionComponent<TextareaProps> = ({ name, ...props }) => {
   return (
     <Binding name={name}>
       {(store: DataStore): ReactElement => (
-        <input
+        <textarea
           name={store.getPath(true)}
           value={store.toJSON<string>() || ""}
           onChange={(e): void => {
-            store.set(
-              props.type === "checkbox" ? !!e.target.checked : e.target.value
-            );
+            store.set(e.target.value);
           }}
           {...props}
         />
@@ -27,4 +25,4 @@ const Input: FunctionComponent<InputProps> = ({ name, ...props }) => {
   );
 };
 
-export default Input;
+export default Textarea;

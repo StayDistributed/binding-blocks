@@ -6,7 +6,7 @@
 Notice that `<If />` doesn't change the position in the store tree (you still need `With` to change position)
 
 ```jsx
-import { Binding, Value, With, If } from '../src';
+import { Binding, Value, With, If } from 'binding-blocks';
 
 const data = {
   title: 'Example #1',

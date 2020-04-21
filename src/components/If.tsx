@@ -10,7 +10,7 @@ interface IfProps {
 const If: FunctionComponent<IfProps> = (props) => {
   const handler: DataStoreHandler = useDataStore(props);
 
-  const hidden = handler && handler.store ? !props.not : props.not;
+  const hidden = handler && handler.store.toJSON() ? !props.not : props.not;
 
   if (!hidden) {
     return null;

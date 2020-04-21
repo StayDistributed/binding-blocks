@@ -55,7 +55,7 @@ const data = {
 ```
 
 ```jsx
-import { Binding, Value, With, ForEach } from '../src';
+import { Binding, Value, With, ForEach } from 'binding-blocks';
 import Place from './components/Place';
 import { data } from './data/advancedData';
 

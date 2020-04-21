@@ -1,7 +1,7 @@
 The more forms are complex, the more `binding-blocks` helps to keep high readability.
 
 ```jsx
-import { Form, ForEach, Input, Button } from '../src';
+import { Form, ForEach, Input, Button } from 'binding-blocks';
 
 /**
  * Design the state

@@ -1,7 +1,7 @@
 `Foreach` loop through values of a _Store_'s array
 
 ```jsx
-import { Binding, Value, ForEach, With } from '../src';
+import { Binding, Value, ForEach, With } from 'binding-blocks';
 
 const data = {
   skills: ['css', 'js'],

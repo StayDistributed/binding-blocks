@@ -6,7 +6,7 @@ import useDataStore from "./hooks/useDataStore";
 /**
  * Core
  */
-import Binding, { Form } from "./components/Binding";
+import Binding from "./components/Binding";
 import Value from "./components/Value";
 import If from "./components/If";
 import ForEach from "./components/ForEach";
@@ -14,9 +14,12 @@ import ForEach from "./components/ForEach";
 /**
  * DOM Elements
  */
-import Button from "./components/ui/Button";
-import Input from "./components/ui/Input";
-import Log from "./components/ui/Log";
+import Form from "./components/dom/Form";
+import Input from "./components/dom/Input";
+import Textarea from "./components/dom/Textarea";
+import Select from "./components/dom/Select";
+import Button from "./components/dom/Button";
+import Log from "./components/dom/Log";
 
 /**
  * Alias
@@ -32,6 +35,8 @@ export {
   ForEach,
   Form,
   Input,
+  Textarea,
+  Select,
   Button,
   Log,
 };

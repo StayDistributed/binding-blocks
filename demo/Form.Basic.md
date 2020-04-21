@@ -1,12 +1,13 @@
 
 
 ```jsx
-import { Form, Input, Button, Log } from '../src';
+import { Form, Input, Select, Button, Log } from 'binding-blocks';
 
 const data = {
   email: 'info@example.com',
   password: 'secret',
-  remember: false
+  remember: false,
+  gender: ''
 };
 
 const handleClick = (e, store) => {
@@ -25,6 +26,13 @@ const handleClick = (e, store) => {
       <Input name="password" type="password" class="form-control" />
 
       <label><Input name="remember" type="checkbox" /> Remember me</label>
+
+      <label>Gender</label>
+      <Select name="gender" class="form-control">
+        <option value="">not specified</option>
+        <option value="female">F</option>
+        <option value="male">M</option>
+      </Select>
 
       <br /><br />
 

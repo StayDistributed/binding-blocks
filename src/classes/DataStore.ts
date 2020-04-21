@@ -251,7 +251,8 @@ class DataStore {
     if (
       this.storePrimitive ||
       this.storePrimitive === 0 ||
-      this.storePrimitive === false
+      this.storePrimitive === false ||
+      this.storePrimitive === ""
     ) {
       return this.storePrimitive;
     }

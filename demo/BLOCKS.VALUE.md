@@ -4,7 +4,7 @@ Value renders the value of the store's node in current position
 - `<Value name="someprop" />` renders the value of `someprop` in the store tree
 
 ```jsx
-import { Binding, With, Value } from '../src';
+import { Binding, With, Value } from 'binding-blocks';
 
 const data = {
   title: 'Example #1',

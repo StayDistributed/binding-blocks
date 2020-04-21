@@ -40,6 +40,11 @@ module.exports = {
           content: "demo/INTRO.BASIC.EXAMPLE.md",
           exampleMode: "expand",
         },
+        {
+          name: "Advanced Example",
+          content: "demo/ADVANCED.EXAMPLE.md",
+          exampleMode: "expand",
+        },
       ],
     },
     {
@@ -79,15 +84,35 @@ module.exports = {
       exampleMode: "expand",
     },
     {
-      name: "Advanced Example",
-      content: "demo/ADVANCED.EXAMPLE.md",
-      exampleMode: "expand",
-    },
-    {
-      name: "Forms",
-      content: "demo/Form.md",
+      name: "DOM elements",
+      content: "demo/DOM.md",
       exampleMode: "expand",
       sections: [
+        {
+          name: "<Form />",
+          content: "demo/Form.Form.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "<Input />",
+          content: "demo/Form.Input.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "<Textarea />",
+          content: "demo/Form.Textarea.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "<Select />",
+          content: "demo/Form.Select.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "<Button />",
+          content: "demo/Form.Button.md",
+          exampleMode: "expand",
+        },
         {
           name: "Basic",
           content: "demo/Form.Basic.md",
@@ -106,6 +131,9 @@ module.exports = {
    * configs
    */
   styleguideDir: "docs",
+  moduleAliases: {
+    "binding-blocks": require("path").resolve(__dirname, "src"),
+  },
   webpackConfig: {
     resolve: {
       // Add ".ts" and ".tsx" as resolvable extensions.

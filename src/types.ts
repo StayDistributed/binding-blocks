@@ -27,7 +27,6 @@ type OnReset = (e: FormEvent<HTMLFormElement>, store: DataStore) => void;
  * Custom events
  */
 type OnChange = (store: DataStore) => void;
-type OnDidChange = (store: DataStore) => void;
 
 export interface DataStoreHandler {
   Provider: DataStoreContext["Provider"];
@@ -39,16 +38,14 @@ export interface DataStoreHandler {
   };
 }
 
-type HTMLTagName = keyof JSX.IntrinsicElements;
-
 export interface DataStoreProps {
   debug?: boolean;
   data?: DataValues;
   name?: string | number;
-  as?: HTMLTagName;
-  children?: ((store: DataStore) => ReactElement) | ReactNode;
+  children?:
+    | ((store: DataStore, handler: DataStoreHandler) => ReactElement)
+    | ReactNode;
   onSubmit?: OnSubmit;
   onReset?: OnReset;
   onChange?: OnChange;
-  onDidChange?: OnDidChange;
 }

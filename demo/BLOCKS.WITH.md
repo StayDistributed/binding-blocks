@@ -22,7 +22,7 @@ Is also available an alias for Binding, to improve readability:
 ```
 
 ```jsx
-import { Binding, With, Value } from '../src';
+import { Binding, With, Value } from 'binding-blocks';
 import { blockBindingData } from './data/blocks';
 
 <Binding data={blockBindingData}>
