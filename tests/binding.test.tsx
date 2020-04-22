@@ -75,6 +75,46 @@ describe("Form", () => {
     expect(tmpVar).toBe(1);
   });
 
+  it("Form with onChange", () => {
+    let form: ReactTestRenderer;
+    const onChange = jest.fn();
+
+    act(() => {
+      form = create(
+        <Form debug data={{ count: 10 }} onChange={onChange}></Form>
+      );
+    });
+    expect(onChange.mock.calls.length).toBe(0);
+
+    act(() => {
+      form.toJSON().props.debugstore.set("count", 20);
+    });
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange).toBeCalledWith(form.toJSON().props.debugstore);
+  });
+
+  it("Form with onReset", () => {
+    let form: ReactTestRenderer;
+    const onReset = jest.fn();
+
+    act(() => {
+      form = create(<Form debug data={{ count: 10 }} onReset={onReset}></Form>);
+    });
+    expect(onReset.mock.calls.length).toBe(0);
+
+    act(() => {
+      form.toJSON().props.debugstore.set("count", 20);
+    });
+    expect(onReset.mock.calls.length).toBe(0);
+    expect(form.toJSON().props.debugstore.get("count").toJSON()).toBe(20);
+
+    act(() => {
+      form.toJSON().props.debugstore.reset();
+    });
+    expect(onReset.mock.calls.length).toBe(0);
+    expect(form.toJSON().props.debugstore.get("count").toJSON()).toBe(10);
+  });
+
   it("Form with render prop, update store value", () => {
     let form: ReactTestRenderer;
     let setCounter: (c: number) => void;

@@ -68,10 +68,37 @@ describe("DataStore", () => {
     expect(store.get("firstName").get("something")).toBe(null);
   });
 
+  it("mutate", () => {
+    const initialValues = { skills: ["js", "css"], name: "Mark", age: 30 };
+    const store = DataStore.createStore(initialValues);
+
+    store.mutate("name", () => "John");
+    expect(store.get("name").toJSON()).toBe("John");
+
+    store.mutate("age", (v: number) => v + 1);
+    expect(store.get("age").toJSON()).toBe(31);
+
+    store.get("skills").mutate(0, (v: string) => {
+      expect(v).toBe("js");
+      return "ts";
+    });
+    expect(store.get("skills").toJSON()).toMatchObject(["ts", "css"]);
+
+    store.get("name").mutate(() => "Bob");
+    expect(store.get("name").toJSON()).toBe("Bob");
+  });
+
   it("unset", () => {
     const initialValues = { firstName: "Mark", lastName: "Doe" };
     const store = DataStore.createStore(initialValues);
     expect(store.get("firstName").toJSON()).toBe("Mark");
+
+    store.unset("missing");
+    expect(store.toJSON()).toMatchObject(initialValues);
+
+    store.get("firstName").unset("missing");
+    expect(store.toJSON()).toMatchObject(initialValues);
+
     store.unset("firstName");
     expect(store.get("firstName")).toBeFalsy();
   });
@@ -119,13 +146,18 @@ describe("DataStore", () => {
         ],
       },
     });
-    expect(store.get("a").get("b").get(0).getPath(true)).toBe("a[b][0]");
+    const b = store.get("a").get("b");
 
-    store.get("a").get("b").push({ name: "Mark" });
+    expect(b.get(0).getPath(true)).toBe("a[b][0]");
+    expect(b.get(0).getPath()).toMatchObject(["a", "b", 0]);
+    expect(b.get(0).get("name").getPath(true)).toBe("a[b][0][name]");
+    expect(b.get(0).get("name").getPath()).toMatchObject(["a", "b", 0, "name"]);
 
-    expect(store.get("a").get("b").get(1).get("name").getPath(true)).toBe(
-      "a[b][1][name]"
-    );
+    b.push({ name: "Mark" });
+    expect(b.get(1).getPath(true)).toBe("a[b][1]");
+    expect(b.get(1).getPath()).toMatchObject(["a", "b", 1]);
+    expect(b.get(1).get("name").getPath(true)).toBe("a[b][1][name]");
+    expect(b.get(1).get("name").getPath()).toMatchObject(["a", "b", 1, "name"]);
   });
 
   it("on", () => {

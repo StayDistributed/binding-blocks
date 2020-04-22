@@ -58,11 +58,34 @@ class DataStore {
    * Hierarchy
    */
   protected getRoot(): DataStore {
-    return this.root || this;
+    return this.root;
   }
 
   protected isRoot(): boolean {
     return this === this.root;
+  }
+
+  /**
+   * Get the path relative to parent `store`
+   * returns null if doesn't exist
+   */
+  protected getThisPath(): number | string {
+    let thisPath = null;
+
+    if (this === this.parent) {
+      return null;
+    }
+
+    if (this.parent.storeArray) {
+      thisPath = this.parent.storeArray.indexOf(this);
+    }
+    if (this.parent.storeMap) {
+      this.parent.storeMap.forEach((value, key) => {
+        if (value === this) thisPath = key;
+      });
+    }
+
+    return thisPath;
   }
 
   getPath(): (number | string)[];
@@ -70,20 +93,10 @@ class DataStore {
   getPath(encoded: boolean): string;
 
   getPath(encoded?: boolean): string | (number | string)[] {
-    let thisPath = null;
-
-    if (this !== this.parent) {
-      if (this.parent.storeArray) {
-        thisPath = this.parent.storeArray.indexOf(this);
-      }
-      if (this.parent.storeMap) {
-        this.parent.storeMap.forEach((value, key) => {
-          if (value === this) thisPath = key;
-        });
-      }
-    }
-
     const path = this !== this.parent ? this.parent.getPath() : [];
+
+    const thisPath = this.getThisPath();
+
     if (thisPath !== null) {
       path.push(thisPath);
     }
@@ -298,14 +311,16 @@ class DataStore {
     }
   }
 
-  public push(value: DataValues): void {
+  public push(value: DataValues): DataStore {
     if (this.storeArray) {
       this.storeArray.push(this.createChildStore(value));
       this.setTimestamp().emit(EventType.CHANGE);
     }
+
+    return this;
   }
 
-  public remove(index: number): void {
+  public remove(index: number): DataStore {
     if (this.storeArray) {
       const deleted = this.storeArray.splice(index, 1);
 
@@ -317,6 +332,8 @@ class DataStore {
         deleted.forEach((store) => store.release());
       }
     }
+
+    return this;
   }
 
   public removeFromParent(): void {
