@@ -41,8 +41,13 @@ module.exports = {
           exampleMode: "expand",
         },
         {
-          name: "Advanced Example",
+          name: "Supported Types",
           content: "demo/ADVANCED.EXAMPLE.md",
+          exampleMode: "expand",
+        },
+        {
+          name: "Remote Fetch",
+          content: "demo/INTRO.REMOTE.EXAMPLE.md",
           exampleMode: "expand",
         },
       ],
@@ -114,7 +119,7 @@ module.exports = {
           exampleMode: "expand",
         },
         {
-          name: "Basic",
+          name: "Basic Form",
           content: "demo/Form.Basic.md",
           exampleMode: "expand",
         },

@@ -27,6 +27,8 @@ const handleClick = (e, store) => {
 
       <label><Input name="remember" type="checkbox" /> Remember me</label>
 
+      <br />
+
       <label>Gender</label>
       <Select name="gender" class="form-control">
         <option value="">not specified</option>
