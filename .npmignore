@@ -4,8 +4,9 @@ docs
 output
 src
 tests
-types/**/*
-!types/src/**/*
+dist/types
+
+!dist/types/src/**/*
 
 .*rc
 .*ignore
