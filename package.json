@@ -8,8 +8,8 @@
   "types": "dist/types/src/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "NODE_ENV=production rollup -c",
+    "dev": "NODE_ENV=development rollup -c -w",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage",

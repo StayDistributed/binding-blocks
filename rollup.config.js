@@ -24,7 +24,7 @@ const libPlugins = [
     exclude: "node_modules/**", // only transpile our source code
   }),
   replace({
-    "process.env.NODE_ENV": process.env.NODE_ENV,
+    "process.env.NODE_ENV": `"${process.env.NODE_ENV}"`,
   }),
 ];
 
@@ -68,20 +68,24 @@ module.exports = [
     ],
     external: ["react"],
   },
-  {
-    input: "demo/index.tsx",
-    output: {
-      dir: "output",
-      format: "es",
-    },
-    plugins: [
-      ...libPlugins,
-      html(),
-      serve({
-        open: true,
-        openPage: "/",
-        contentBase: ["output"],
-      }),
-    ],
-  },
+  ...(process.env.NODE_ENV === "development"
+    ? [
+        {
+          input: "demo/index.tsx",
+          output: {
+            dir: "output",
+            format: "es",
+          },
+          plugins: [
+            ...libPlugins,
+            html(),
+            serve({
+              open: true,
+              openPage: "/",
+              contentBase: ["output"],
+            }),
+          ],
+        },
+      ]
+    : []),
 ];
