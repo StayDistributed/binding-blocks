@@ -3,7 +3,7 @@ Using `<Form>`, the root component will be wrapped in an HTML `<form>` element, 
 prop | type | description
 ---|---|---
 `data`     | `any` | initial store values
-`onChange` | (store: [Store](/#section-store)) => void | store values are changed
+`onChange` | (e: StoreEvent, store: [Store](/#section-store)) => void | store values are changed
 `onSubmit` | (e: FormEvent, store: [Store](/#section-store)) => void | form has been submitted
 `onReset`  | (e: FormEvent, store: [Store](/#section-store)) => void | form values has been reset to initial store values
 `debug`    | `boolean` | expose store in prop "debugstore" for testing

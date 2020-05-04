@@ -8,6 +8,7 @@ import {
 } from "react";
 import { DataStoreProps, DataStoreHandler } from "../types";
 import DataStore from "../classes/DataStore";
+import type StoreEvent from "../classes/StoreEvent";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noOp = (): void => {};
@@ -50,17 +51,17 @@ export function useDataStore(props: DataStoreProps = {}): DataStoreHandler {
    */
   useEffect(() => {
     if (eventEmitter) {
-      const onChange = (): void => {
+      const onChange = (e: StoreEvent): void => {
         setTimestamp(eventEmitter.timestamp());
         if (props.onChange) {
-          props.onChange(store);
+          props.onChange(e, store);
         }
       };
       eventEmitter.on("change", onChange);
 
       const onDidChange = props.onDidChange
-        ? (): void => {
-            props.onDidChange(store);
+        ? (e: StoreEvent): void => {
+            props.onDidChange(e, store);
           }
         : noOp;
       eventEmitter.on("didchange", onDidChange);

@@ -7,6 +7,7 @@ import {
   FormHTMLAttributes,
 } from "react";
 import DataStore, { DataValues } from "./classes/DataStore";
+import type StoreEvent from "./classes/StoreEvent";
 
 export type DataStoreContext = Context<DataStore>;
 
@@ -26,8 +27,8 @@ type OnReset = (e: FormEvent<HTMLFormElement>, store: DataStore) => void;
 /**
  * Custom events
  */
-type OnChange = (store: DataStore) => void;
-type OnDidChange = (store: DataStore) => void;
+type OnChange = (e: StoreEvent, store: DataStore) => void;
+type OnDidChange = (e: StoreEvent, store: DataStore) => void;
 
 export interface DataStoreHandler {
   Provider: DataStoreContext["Provider"];

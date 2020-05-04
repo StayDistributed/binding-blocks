@@ -90,7 +90,8 @@ describe("Form", () => {
       form.toJSON().props.debugstore.set("count", 20);
     });
     expect(onChange.mock.calls.length).toBe(1);
-    expect(onChange).toBeCalledWith(form.toJSON().props.debugstore);
+    expect(onChange.mock.calls[0][0].type).toBe("change");
+    expect(onChange.mock.calls[0][1]).toBe(form.toJSON().props.debugstore);
   });
 
   it("Form with onReset", () => {
