@@ -16,6 +16,7 @@ const Form: FunctionComponent<FormProps> = (props) => {
     data,
     name,
     onChange,
+    onDidChange,
     onSubmit,
     onReset,
     ...formProps

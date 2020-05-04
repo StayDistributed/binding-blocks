@@ -27,6 +27,7 @@ type OnReset = (e: FormEvent<HTMLFormElement>, store: DataStore) => void;
  * Custom events
  */
 type OnChange = (store: DataStore) => void;
+type OnDidChange = (store: DataStore) => void;
 
 export interface DataStoreHandler {
   Provider: DataStoreContext["Provider"];
@@ -48,4 +49,5 @@ export interface DataStoreProps {
   onSubmit?: OnSubmit;
   onReset?: OnReset;
   onChange?: OnChange;
+  onDidChange?: OnDidChange;
 }

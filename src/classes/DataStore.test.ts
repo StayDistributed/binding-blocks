@@ -255,16 +255,39 @@ describe("DataStore", () => {
     expect(onL2Change.mock.calls.length).toBe(5);
   });
 
-  it("reset", () => {
+  it("reset root store", () => {
     const store = DataStore.createStore({
       name: "John",
       skills: ["js", "css"],
     });
 
+    store.set("name", "Bob");
     store.set("skills", ["ruby"]);
+    expect(store.get("name").toJSON()).toBe("Bob");
     expect(store.get("skills").toJSON()).toMatchObject(["ruby"]);
 
     store.reset();
+    expect(store.get("name").toJSON()).toBe("John");
+    expect(store.get("skills").toJSON()).toMatchObject(["js", "css"]);
+  });
+
+  it("reset child store", () => {
+    const store = DataStore.createStore({
+      name: "John",
+      skills: ["js", "css"],
+    });
+
+    store.get("name").set("Bob");
+    store.get("skills").set(["ruby"]);
+    expect(store.get("name").toJSON()).toBe("Bob");
+    expect(store.get("skills").toJSON()).toMatchObject(["ruby"]);
+
+    store.get("name").reset();
+    expect(store.get("name").toJSON()).toBe("John");
+    expect(store.get("skills").toJSON()).toMatchObject(["ruby"]);
+
+    store.get("skills").reset();
+    expect(store.get("name").toJSON()).toBe("John");
     expect(store.get("skills").toJSON()).toMatchObject(["js", "css"]);
   });
 

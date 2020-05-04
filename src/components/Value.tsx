@@ -13,7 +13,7 @@ const Value: FunctionComponent<ValueProps> = (props) => {
     return null;
   }
 
-  return <>{handler.store.toJSON()}</>;
+  return <>{handler.store.toValue()}</>;
 };
 
 export default Value;

@@ -17,6 +17,7 @@ const Select: FunctionComponent<SelectProps> = ({ name, ...props }) => {
           value={store.toJSON<string>()}
           onChange={(e): void => {
             store.set(e.target.value);
+            store.emit("didchange");
           }}
           {...props}
         />

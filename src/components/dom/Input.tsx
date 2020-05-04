@@ -1,4 +1,5 @@
 import React, {
+  useState,
   ReactElement,
   FunctionComponent,
   InputHTMLAttributes,
@@ -9,6 +10,8 @@ import type DataStore from "../../classes/DataStore";
 type InputProps = BindingProps<InputHTMLAttributes<HTMLInputElement>>;
 
 const Input: FunctionComponent<InputProps> = ({ name, ...props }) => {
+  const [touched, setTouched] = useState(false);
+
   return (
     <Binding name={name}>
       {(store: DataStore): ReactElement => (
@@ -20,6 +23,15 @@ const Input: FunctionComponent<InputProps> = ({ name, ...props }) => {
             store.set(
               props.type === "checkbox" ? !!e.target.checked : e.target.value
             );
+            setTouched(true);
+          }}
+          onFocus={(): void => {
+            setTouched(false);
+          }}
+          onBlur={(): void => {
+            if (touched) {
+              store.emit("didchange");
+            }
           }}
           {...props}
         />

@@ -9,6 +9,9 @@ import {
 import { DataStoreProps, DataStoreHandler } from "../types";
 import DataStore from "../classes/DataStore";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noOp = (): void => {};
+
 export const FormContext = createContext(null);
 
 export const getStoreFromContext = (
@@ -55,8 +58,16 @@ export function useDataStore(props: DataStoreProps = {}): DataStoreHandler {
       };
       eventEmitter.on("change", onChange);
 
+      const onDidChange = props.onDidChange
+        ? (): void => {
+            props.onDidChange(store);
+          }
+        : noOp;
+      eventEmitter.on("didchange", onDidChange);
+
       return (): void => {
         eventEmitter.off("change", onChange);
+        eventEmitter.off("didchange", onDidChange);
       };
     }
   }, [eventEmitter, store]);

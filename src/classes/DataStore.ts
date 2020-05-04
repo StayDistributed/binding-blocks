@@ -35,24 +35,43 @@ interface Listener {
 
 class DataStore {
   uuid: string;
+  __timestamp: number;
+  __initialTimestamp: number;
 
   root: DataStore;
   parent: DataStore;
-  initialValues: DataValues;
+  __initialValues: DataValues;
 
   constructor(values?: DataValues, root?: DataStore, parent?: DataStore) {
     this.root = root || this;
     this.parent = parent || this;
-    this.uuid = uuidv4();
-    this.initialValues = values;
 
-    this.setTimestamp();
+    this.uuid = uuidv4();
+    this.__timestamp = parent ? parent.timestamp() : 0;
+
     this.initData(values);
+
+    this.__initialTimestamp = this.__timestamp;
+    this.__initialValues = values;
   }
 
   static createStore(values?: DataValues): DataStore {
     return new DataStore(values);
   }
+
+  public touched = (): boolean => this.__timestamp > 0;
+
+  public timestamp = (): number => this.__timestamp;
+
+  protected touch = (timestamp?: number): DataStore => {
+    this.__timestamp = timestamp >= 0 ? timestamp : new Date().getTime();
+
+    if (this.parent !== this) {
+      this.parent.touch(this.__timestamp);
+    }
+
+    return this;
+  };
 
   /**
    * Hierarchy
@@ -116,7 +135,17 @@ class DataStore {
 
   protected storeMap: Map<string, DataStore>;
 
-  __timestamp: number;
+  /**
+   * [0, false, ""] are valid primitive values
+   */
+  protected isPrimitive(): boolean {
+    return (
+      !!this.storePrimitive ||
+      this.storePrimitive === 0 ||
+      this.storePrimitive === false ||
+      this.storePrimitive === ""
+    );
+  }
 
   protected initData(values: DataValues): void {
     delete this.storeMap;
@@ -144,24 +173,6 @@ class DataStore {
 
   protected createChildStore(value: DataValues): DataStore {
     return new DataStore(value, this.getRoot(), this);
-  }
-
-  public timestamp(): number {
-    if (!this.isRoot()) {
-      return this.getRoot().timestamp();
-    }
-
-    return this.__timestamp;
-  }
-
-  protected setTimestamp(timestamp?: number): DataStore {
-    if (!this.isRoot()) {
-      this.getRoot().setTimestamp(timestamp);
-      return this;
-    }
-
-    this.__timestamp = timestamp || new Date().getTime();
-    return this;
   }
 
   /**
@@ -194,7 +205,8 @@ class DataStore {
   public set(key: string | number | DataValues, value?: DataValues): DataStore {
     if (value === undefined) {
       this.initData(key);
-      this.setTimestamp().emit(EventType.CHANGE);
+      this.touch();
+      this.emit(EventType.CHANGE);
     } else {
       let existing: DataStore;
 
@@ -203,14 +215,16 @@ class DataStore {
 
         const store = this.createChildStore(value);
         this.storeArray[key as number] = store;
-        this.setTimestamp().emit(EventType.CHANGE);
+        store.touch();
+        this.emit(EventType.CHANGE);
       }
       if (this.storeMap) {
         existing = this.storeMap.get(key as string);
 
         const store = this.createChildStore(value);
         this.storeMap.set(key as string, store);
-        this.setTimestamp().emit(EventType.CHANGE);
+        store.touch();
+        this.emit(EventType.CHANGE);
       }
 
       if (existing) {
@@ -225,7 +239,7 @@ class DataStore {
       const target = this.get(key);
       this.storeMap.delete(key);
       if (target) {
-        target.setTimestamp().emit(EventType.CHANGE);
+        target.touch().emit(EventType.CHANGE);
       }
     }
 
@@ -235,20 +249,25 @@ class DataStore {
   public reset(): DataStore {
     const listeners = this.getListeners(HierarchyDirection.INCLUSIVE_DOWN);
 
-    this.initData(this.initialValues);
+    /**
+     * reset timestamp to its initial value
+     * notice that it can be !== 0 if store has been replaced in App's lifecycle.
+     */
+    this.__timestamp = this.__initialTimestamp;
+    this.initData(this.__initialValues);
 
     const e = new StoreEvent(EventType.CHANGE, this);
     this.dispatch(e, listeners);
     return this;
   }
 
-  public toObject<T = DataValues>(): T;
+  public toJSON<T = DataValues>(): T;
 
-  public toObject(): DataValues {
+  public toJSON(): DataValues {
     if (this.storeArray) {
       return this.storeArray.map((value) => {
         return value instanceof DataStore
-          ? value.toObject()
+          ? value.toJSON()
           : (value as DataValues);
       });
     }
@@ -257,21 +276,23 @@ class DataStore {
         [key: string]: DataValues;
       }>((obj, [key, value]) => {
         obj[key] =
-          value instanceof DataStore ? value.toObject() : (value as DataValues);
+          value instanceof DataStore ? value.toJSON() : (value as DataValues);
         return obj;
       }, {});
     }
-    if (
-      this.storePrimitive ||
-      this.storePrimitive === 0 ||
-      this.storePrimitive === false ||
-      this.storePrimitive === ""
-    ) {
+    if (this.isPrimitive()) {
       return this.storePrimitive;
     }
   }
 
-  toJSON = this.toObject;
+  toObject = this.toJSON;
+
+  /**
+   * toValue returns the value if the store is primitive
+   * with a fallback on JSON stringify for arrays and objects
+   */
+  public toValue = (): PrimitiveTypes =>
+    this.isPrimitive() ? this.storePrimitive : JSON.stringify(this);
 
   /**
    * You can map directly an Array, by calling `map()` on it
@@ -305,7 +326,7 @@ class DataStore {
       const existing = this.storeArray.pop();
 
       if (existing) {
-        this.setTimestamp().emit(EventType.CHANGE);
+        this.touch().emit(EventType.CHANGE);
         existing.release();
       }
     }
@@ -314,7 +335,7 @@ class DataStore {
   public push(value: DataValues): DataStore {
     if (this.storeArray) {
       this.storeArray.push(this.createChildStore(value));
-      this.setTimestamp().emit(EventType.CHANGE);
+      this.touch().emit(EventType.CHANGE);
     }
 
     return this;
@@ -325,7 +346,7 @@ class DataStore {
       const deleted = this.storeArray.splice(index, 1);
 
       if (deleted.length) {
-        this.setTimestamp().emit(EventType.CHANGE);
+        this.touch().emit(EventType.CHANGE);
         this.storeArray.forEach((store) => {
           store.emit(EventType.CHANGE, HierarchyDirection.EXCLUSIVE_DOWN);
         });
@@ -393,6 +414,7 @@ class DataStore {
    * (shortcut)
    */
   protected release(): DataStore {
+    this.touch();
     this.emit(EventType.CHANGE, HierarchyDirection.INCLUSIVE_DOWN);
 
     return this;
@@ -482,7 +504,7 @@ class DataStore {
         const v = this.get(key);
         this.set(key, mutator(v ? v.toObject() : 0));
       }
-    } else if (this.storePrimitive || this.storePrimitive === 0) {
+    } else if (this.isPrimitive()) {
       mutator = key as Mutator;
       const v = this.storePrimitive;
       this.set(mutator(v) as PrimitiveTypes);
