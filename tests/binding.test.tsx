@@ -18,11 +18,11 @@ describe("Form", () => {
     act(() => {
       form = create(<Form></Form>);
     });
-    expect(form.toJSON().props.debugstore).toBeFalsy();
+    expect(form.toJSON().props["data-debug-store"]).toBeFalsy();
     act(() => {
       form = create(<Form debug></Form>);
     });
-    expect(form.toJSON().props.debugstore).toBeTruthy();
+    expect(form.toJSON().props["data-debug-store"]).toBeTruthy();
   });
 
   it("Form with children", () => {
@@ -55,8 +55,10 @@ describe("Form", () => {
     });
     expect(form.toJSON());
     expect(form.toJSON().children).toBeNull();
-    expect(form.toJSON().props.debugstore.get("firstName")).toBeTruthy();
-    expect(form.toJSON().props.debugstore.toJSON()).toMatchObject(
+    expect(
+      form.toJSON().props["data-debug-store"].get("firstName")
+    ).toBeTruthy();
+    expect(form.toJSON().props["data-debug-store"].toJSON()).toMatchObject(
       initialValues
     );
   });
@@ -71,7 +73,7 @@ describe("Form", () => {
     expect(form.toJSON().children === null);
     expect(form.toJSON().props.onSubmit).toBeTruthy();
     expect(tmpVar).toBe(0);
-    form.toJSON().props.onSubmit();
+    form.toJSON().props.onSubmit(new Event("submit"));
     expect(tmpVar).toBe(1);
   });
 
@@ -86,12 +88,14 @@ describe("Form", () => {
     });
     expect(onChange.mock.calls.length).toBe(0);
 
+    const store = form.toJSON().props["data-debug-store"];
     act(() => {
-      form.toJSON().props.debugstore.set("count", 20);
+      store.set("count", 20);
     });
     expect(onChange.mock.calls.length).toBe(1);
     expect(onChange.mock.calls[0][0].type).toBe("change");
-    expect(onChange.mock.calls[0][1]).toBe(form.toJSON().props.debugstore);
+    expect(onChange.mock.calls[0][0].parent).toBe(store);
+    expect(onChange.mock.calls[0][0].root).toBe(store);
   });
 
   it("Form with onReset", () => {
@@ -104,16 +108,20 @@ describe("Form", () => {
     expect(onReset.mock.calls.length).toBe(0);
 
     act(() => {
-      form.toJSON().props.debugstore.set("count", 20);
+      form.toJSON().props["data-debug-store"].set("count", 20);
     });
     expect(onReset.mock.calls.length).toBe(0);
-    expect(form.toJSON().props.debugstore.get("count").toJSON()).toBe(20);
+    expect(form.toJSON().props["data-debug-store"].get("count").toJSON()).toBe(
+      20
+    );
 
     act(() => {
-      form.toJSON().props.debugstore.reset();
+      form.toJSON().props["data-debug-store"].reset();
     });
     expect(onReset.mock.calls.length).toBe(0);
-    expect(form.toJSON().props.debugstore.get("count").toJSON()).toBe(10);
+    expect(form.toJSON().props["data-debug-store"].get("count").toJSON()).toBe(
+      10
+    );
   });
 
   it("Form with render prop, update store value", () => {
@@ -133,23 +141,23 @@ describe("Form", () => {
     });
     expect(form.toJSON());
     expect(form.toJSON().children).toBeNull();
-    expect(form.toJSON().props.debugstore.toJSON().counter).toBe(1);
+    expect(form.toJSON().props["data-debug-store"].toJSON().counter).toBe(1);
     act(() => {
       setCounter(2);
     });
-    expect(form.toJSON().props.debugstore.toJSON().counter).toBe(2);
+    expect(form.toJSON().props["data-debug-store"].toJSON().counter).toBe(2);
     act(() => {
       setCounter(100);
     });
-    expect(form.toJSON().props.debugstore.toJSON().counter).toBe(100);
+    expect(form.toJSON().props["data-debug-store"].toJSON().counter).toBe(100);
     act(() => {
       setCounter(0);
     });
-    expect(form.toJSON().props.debugstore.toJSON().counter).toBe(0);
+    expect(form.toJSON().props["data-debug-store"].toJSON().counter).toBe(0);
     act(() => {
       setCounter(-2);
     });
-    expect(form.toJSON().props.debugstore.toJSON().counter).toBe(-2);
+    expect(form.toJSON().props["data-debug-store"].toJSON().counter).toBe(-2);
   });
 
   it("Form nested", () => {
@@ -181,9 +189,11 @@ describe("Form", () => {
     });
     expect(form.toJSON().children).toBeTruthy();
     expect(form.toJSON().children[0].type).toBe("form");
-    expect(form.toJSON().props.debugstore.get("location")).toBeTruthy();
     expect(
-      form.toJSON().props.debugstore.get("location").toJSON()
+      form.toJSON().props["data-debug-store"].get("location")
+    ).toBeTruthy();
+    expect(
+      form.toJSON().props["data-debug-store"].get("location").toJSON()
     ).toMatchObject(initialValues.location);
     act(() => {
       const input = form.toJSON().children[0].children[0];
@@ -191,6 +201,8 @@ describe("Form", () => {
         input.props.onChange({ currentTarget: { value: "Rome" } });
       }
     });
-    expect(form.toJSON().props.debugstore.toJSON().location.city).toBe("Rome");
+    expect(form.toJSON().props["data-debug-store"].toJSON().location.city).toBe(
+      "Rome"
+    );
   });
 });

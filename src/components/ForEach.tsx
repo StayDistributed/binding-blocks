@@ -1,9 +1,9 @@
 import React, { ReactElement, FunctionComponent } from "react";
-import { DataStoreProps } from "../types";
+import { BindingProps } from "../types";
 import Binding from "./Binding";
 import type DataStore from "../classes/DataStore";
 
-const ForEach: FunctionComponent<DataStoreProps> = (props): ReactElement => {
+const ForEach: FunctionComponent<BindingProps> = (props): ReactElement => {
   return (
     <Binding {...props}>
       {(store: DataStore): ReactElement[] =>

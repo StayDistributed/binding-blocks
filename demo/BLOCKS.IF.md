@@ -1,7 +1,9 @@
-`If` renders its children only if the relative value is set
+`If` renders its children only if the relative value is set (or not)
 
-- `<If name="someprop" />` renders children if `someprop` is set
-- `<If not name="someprop" />` renders children if `someprop` is NOT set
+prop | type | description
+---|---|---
+`not`  | `boolean` | Determine to check if the value is truthy or falsy
+`name` | `string, number` | The position in the store's tree
 
 Notice that `<If />` doesn't change the position in the store tree (you still need `With` to change position)
 

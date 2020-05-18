@@ -4,10 +4,13 @@ import React, {
   FunctionComponent,
   TextareaHTMLAttributes,
 } from "react";
-import Binding, { BindingProps } from "../Binding";
+import Binding from "../Binding";
 import type DataStore from "../../classes/DataStore";
+import { BindingProps } from "../../types";
 
-type TextareaProps = BindingProps<TextareaHTMLAttributes<HTMLTextAreaElement>>;
+type NativeTextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+type TextareaProps = NativeTextareaProps & BindingProps;
 
 const Textarea: FunctionComponent<TextareaProps> = ({ name, ...props }) => {
   const [touched, setTouched] = useState(false);

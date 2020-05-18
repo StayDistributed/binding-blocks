@@ -1,7 +1,8 @@
 Value renders the value of the store's node in current position
 
-- `<Value />` renders the store in current position, as is
-- `<Value name="someprop" />` renders the value of `someprop` in the store tree
+prop | type | description
+---|---|---
+`name` | `string, number` | The position in the store's tree
 
 ```jsx
 import { Binding, With, Value } from 'binding-blocks';

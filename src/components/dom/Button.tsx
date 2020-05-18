@@ -4,15 +4,19 @@ import React, {
   ButtonHTMLAttributes,
   MouseEvent,
 } from "react";
-import Binding, { BindingProps } from "../Binding";
+import Binding from "../Binding";
 import type DataStore from "../../classes/DataStore";
+import { BindingProps } from "../../types";
 
-interface ButtonProps
-  extends BindingProps<
-    Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">
-  > {
-  onClick?: (e: MouseEvent<HTMLButtonElement>, store: DataStore) => void;
-}
+type NativeButtonProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "onClick"
+>;
+
+type ButtonProps = NativeButtonProps &
+  BindingProps & {
+    onClick?: (e: MouseEvent<HTMLButtonElement>, store: DataStore) => void;
+  };
 
 const Button: FunctionComponent<ButtonProps> = ({
   name,
@@ -23,13 +27,13 @@ const Button: FunctionComponent<ButtonProps> = ({
     <Binding name={name}>
       {(store: DataStore): ReactElement => (
         <button
+          {...props}
           name={store.getPath(true)}
           onClick={(e): void => {
             if (onClick) {
               onClick(e, store);
             }
           }}
-          {...props}
         />
       )}
     </Binding>

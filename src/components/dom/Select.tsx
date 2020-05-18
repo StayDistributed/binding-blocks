@@ -3,10 +3,13 @@ import React, {
   FunctionComponent,
   SelectHTMLAttributes,
 } from "react";
-import Binding, { BindingProps } from "../Binding";
+import Binding from "../Binding";
 import type DataStore from "../../classes/DataStore";
+import { BindingProps } from "../../types";
 
-type SelectProps = BindingProps<SelectHTMLAttributes<HTMLSelectElement>>;
+type NativeSelectProps = SelectHTMLAttributes<HTMLSelectElement>;
+
+type SelectProps = NativeSelectProps & BindingProps;
 
 const Select: FunctionComponent<SelectProps> = ({ name, ...props }) => {
   return (

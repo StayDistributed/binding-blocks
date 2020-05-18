@@ -10,13 +10,20 @@ import { Binding, With, Value, Log } from 'binding-blocks';
 const APIWrapper = () => {
   const [state, setState] = React.useState();
 
-  React.useEffect(() => {
+  const fetchData = () => {
+    setState('loading');
     fetch('https://api.github.com/repos/StayDistributed/binding-blocks')
       .then(response => response.json())
       .then(response => setState(response))
-  }, []);
+  };
 
-  if (!state) return null;
+  if (!state) return (
+    <button class="btn btn-primary" onClick={fetchData}>Fetch Data</button>
+  );
+
+  if (state === 'loading') return (
+    <button class="btn btn-secondary">Loading...</button>
+  );
 
   return (
     <Binding data={state}>

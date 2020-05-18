@@ -17,12 +17,12 @@ describe("Form", () => {
     expect(form.toJSON().children[0]).toBe("foo");
     expect(form.toJSON().children[1]).toBeFalsy();
     act(() => {
-      form.toJSON().props.debugstore.set("lastName", "Doe");
+      form.toJSON().props["data-debug-store"].set("lastName", "Doe");
     });
     expect(form.toJSON().children[0]).toBe("foo");
     expect(form.toJSON().children[1]).toBe("bar");
     act(() => {
-      form.toJSON().props.debugstore.unset("firstName");
+      form.toJSON().props["data-debug-store"].unset("firstName");
     });
     expect(form.toJSON().children[0]).toBe("bar");
     expect(form.toJSON().children[1]).toBeFalsy();
@@ -42,12 +42,12 @@ describe("Form", () => {
     expect(form.toJSON().children[0]).toBe("foo");
     expect(form.toJSON().children[1]).toBeFalsy();
     act(() => {
-      form.toJSON().props.debugstore.set("lastName", "Doe");
+      form.toJSON().props["data-debug-store"].set("lastName", "Doe");
     });
     expect(form.toJSON().children[0]).toBe("foo");
     expect(form.toJSON().children[1]).toBe("bar");
     act(() => {
-      form.toJSON().props.debugstore.unset("firstName");
+      form.toJSON().props["data-debug-store"].unset("firstName");
     });
     expect(form.toJSON().children[0]).toBe("bar");
     expect(form.toJSON().children[1]).toBeFalsy();
@@ -71,11 +71,11 @@ describe("Form", () => {
     expect(form.toJSON().children[0]).toBe("bar");
     expect(form.toJSON().children[1]).toBeFalsy();
     act(() => {
-      form.toJSON().props.debugstore.set("lastName", "Doe");
+      form.toJSON().props["data-debug-store"].set("lastName", "Doe");
     });
     expect(form.toJSON().children).toBeFalsy();
     act(() => {
-      form.toJSON().props.debugstore.unset("firstName");
+      form.toJSON().props["data-debug-store"].unset("firstName");
     });
     expect(form.toJSON().children[0]).toBe("foo");
     expect(form.toJSON().children[1]).toBeFalsy();

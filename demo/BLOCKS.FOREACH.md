@@ -1,5 +1,9 @@
 `Foreach` loop through values of a _Store_'s array
 
+prop | type | description
+---|---|---
+`name` | `string, number` | the position in the store's tree
+
 ```jsx
 import { Binding, Value, ForEach, With } from 'binding-blocks';
 

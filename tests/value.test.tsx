@@ -16,22 +16,22 @@ describe("Form", () => {
     expect(form.toJSON().children[0]).toBe("Mark");
 
     act(() => {
-      form.toJSON().props.debugstore.get("firstName").set("Doe");
+      form.toJSON().props["data-debug-store"].get("firstName").set("Doe");
     });
     expect(form.toJSON().children[0]).toBe("Doe");
 
     act(() => {
-      form.toJSON().props.debugstore.get("firstName").set("Bob");
+      form.toJSON().props["data-debug-store"].get("firstName").set("Bob");
     });
     expect(form.toJSON().children[0]).toBe("Bob");
 
     act(() => {
-      form.toJSON().props.debugstore.set("firstName", "John");
+      form.toJSON().props["data-debug-store"].set("firstName", "John");
     });
     expect(form.toJSON().children[0]).toBe("John");
 
     act(() => {
-      form.toJSON().props.debugstore.get("firstName").set("Doe");
+      form.toJSON().props["data-debug-store"].get("firstName").set("Doe");
     });
     expect(form.toJSON().children[0]).toBe("Doe");
   });

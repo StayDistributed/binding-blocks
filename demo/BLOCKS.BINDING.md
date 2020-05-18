@@ -1,5 +1,13 @@
 Binding is where data is initialized.
-#### `<Binding data={...} />`
+
+prop | type | description
+---|---|---
+`data`     | `any` | initial store values
+`name`     | `string, number` | the position in the store's tree
+`onChange` | (e: [StoreEvent](/#section-store-event)) => void | store values are changed
+`onDidChange` | (e: [StoreEvent](/#section-store-event)) => void | store values editing is finished
+`onSubmit` | (e: [StoreEvent](/#section-store-event)) => void | `submit` event has been triggered
+`onReset`  | (e: [StoreEvent](/#section-store-event)) => void | `reset` event has been triggered
 
 ```jsx static
 const someData = {
@@ -35,7 +43,6 @@ const someData = {
 ---
 
 `Binding` is also used to change the position in the state tree:
-#### `<Binding name="" />`
 
 ```jsx
 import { Binding, Value } from 'binding-blocks';

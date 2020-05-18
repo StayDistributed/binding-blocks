@@ -4,10 +4,13 @@ import React, {
   FunctionComponent,
   InputHTMLAttributes,
 } from "react";
-import Binding, { BindingProps } from "../Binding";
+import Binding from "../Binding";
 import type DataStore from "../../classes/DataStore";
+import { BindingProps } from "../../types";
 
-type InputProps = BindingProps<InputHTMLAttributes<HTMLInputElement>>;
+type NativeInputProps = InputHTMLAttributes<HTMLInputElement>;
+
+type InputProps = NativeInputProps & BindingProps;
 
 const Input: FunctionComponent<InputProps> = ({ name, ...props }) => {
   const [touched, setTouched] = useState(false);

@@ -1,4 +1,4 @@
-import { createStoreIfNotExists, getStoreFromContext } from "./useDataStore";
+import { createStoreIfNotExists, getStoreFromContext } from "./useBindingStore";
 import DataStore from "../classes/DataStore";
 
 describe("useDataStore", () => {

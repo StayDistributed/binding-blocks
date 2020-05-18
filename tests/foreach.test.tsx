@@ -34,9 +34,11 @@ describe("Form", () => {
       form.toJSON().children.map((c: ReactTestRendererJSON) => c.props.value)
     ).toMatchObject(["Sarah", "Bill"]);
     expect(form.toJSON().children).toBeTruthy();
-    expect(form.toJSON().props.debugstore.get("children")).toBeTruthy();
     expect(
-      form.toJSON().props.debugstore.get("children").toJSON()
+      form.toJSON().props["data-debug-store"].get("children")
+    ).toBeTruthy();
+    expect(
+      form.toJSON().props["data-debug-store"].get("children").toJSON()
     ).toMatchObject(initialValues.children);
     act(() => {
       const input = form.toJSON().children[0];
@@ -44,7 +46,9 @@ describe("Form", () => {
         input.props.onChange({ currentTarget: { value: "Jack" } });
       }
     });
-    expect(form.toJSON().props.debugstore.toJSON().children[0]).toBe("Jack");
+    expect(form.toJSON().props["data-debug-store"].toJSON().children[0]).toBe(
+      "Jack"
+    );
   });
 
   it("Foreach object", () => {

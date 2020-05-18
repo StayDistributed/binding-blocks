@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { Binding, Input, ForEach, Button, Log } from "../src";
+import { Form, Input, ForEach, Button, Log } from "../src";
 
 const data = {
   skills: ["js", "css"],
 };
 
 ReactDom.render(
-  <Binding data={data}>
+  <Form data={data} onChange={console.log}>
     <ul>
       <ForEach name="skills">
         <li>
@@ -34,6 +34,6 @@ ReactDom.render(
       </li>
     </ul>
     <Log />
-  </Binding>,
+  </Form>,
   document.body
 );

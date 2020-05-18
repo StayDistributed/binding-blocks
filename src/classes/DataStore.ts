@@ -28,7 +28,7 @@ enum EventType {
   CHANGE = "change",
 }
 
-interface Listener {
+export interface Listener {
   eventName: string;
   callback: (e: StoreEvent) => void;
 }

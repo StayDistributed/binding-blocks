@@ -1,10 +1,8 @@
 import React, { FunctionComponent } from "react";
-import { DataStoreHandler, DataStoreProps } from "../types";
+import { DataStoreHandler, BindingProps } from "../types";
 import useDataStore from "../hooks/useDataStore";
 
-export type BindingProps<T> = Omit<T, "name"> & DataStoreProps;
-
-const Binding: FunctionComponent<DataStoreProps> = (props) => {
+const Binding: FunctionComponent<BindingProps> = (props) => {
   const handler: DataStoreHandler = useDataStore(props);
 
   if (!handler || !handler.store) {
