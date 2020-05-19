@@ -247,7 +247,7 @@ class DataStore {
   }
 
   public reset(): DataStore {
-    const listeners = this.getListeners(HierarchyDirection.INCLUSIVE_DOWN);
+    const children = this.getChildren();
 
     /**
      * reset timestamp to its initial value
@@ -256,8 +256,9 @@ class DataStore {
     this.__timestamp = this.__initialTimestamp;
     this.initData(this.__initialValues);
 
-    const e = new StoreEvent(EventType.CHANGE, this);
-    this.dispatch(e, listeners);
+    this.emit(EventType.CHANGE);
+    children.forEach((store) => store.release());
+
     return this;
   }
 
@@ -424,8 +425,8 @@ class DataStore {
    * Dispatch an event to the listeners
    */
   protected dispatch(e: StoreEvent, listeners: Listener[]): void {
-    listeners.forEach(function (listener: Listener): void {
-      if (e.isStopped()) return this;
+    listeners.forEach((listener: Listener): void => {
+      if (e.isStopped()) return;
 
       if (listener.eventName === e.type) {
         listener.callback(e);
@@ -479,6 +480,25 @@ class DataStore {
     }
 
     return thisListeners;
+  }
+
+  public getChildren(include?: boolean): DataStore[] {
+    const thisChildren: DataStore[] = include ? [this] : [];
+
+    if (this.storeArray) {
+      return this.storeArray.reduce(
+        (children, store) => [...children, ...store.getChildren(true)],
+        thisChildren
+      );
+    }
+    if (this.storeMap) {
+      return Array.from(this.storeMap.values()).reduce(
+        (children, store) => [...children, ...store.getChildren(true)],
+        thisChildren
+      );
+    }
+
+    return thisChildren;
   }
 
   /**

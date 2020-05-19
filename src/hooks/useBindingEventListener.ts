@@ -34,7 +34,7 @@ export function useBindingEventListener(
         }
       };
     }
-  }, [eventListener, listeners]);
+  }, [setTimestamp, eventListener, listeners]);
 
   return [timestamp, setEventListener];
 }

@@ -3,11 +3,14 @@ import ReactDom from "react-dom";
 import { Form, Input, ForEach, Button, Log } from "../src";
 
 const data = {
+  name: "ok",
   skills: ["js", "css"],
 };
 
 ReactDom.render(
-  <Form data={data} onChange={console.log}>
+  <Form data={data} debug>
+    <button type="reset">Reset</button>
+    <Input name="name" />
     <ul>
       <ForEach name="skills">
         <li>

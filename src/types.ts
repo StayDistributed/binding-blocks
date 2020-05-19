@@ -26,6 +26,7 @@ export type BindingChildren =
   | ReactNode;
 
 export interface BindingProps {
+  debug?: boolean;
   data?: DataValues;
   name?: string | number;
   children?: BindingChildren;
