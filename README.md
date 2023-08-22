@@ -6,7 +6,6 @@ React 2-way data binding to easily manage complex forms and data structures.
 [![Travis][build-badge]][build]
 [![Coveralls][coveralls-badge]][coveralls]
 [![CodeFactor][codefactor-badge]][codefactor]
-[![BCH compliance][bch-badge]][bch]
 [![Discord][discord-badge]][discord]
 
 [npm-badge]: https://img.shields.io/npm/v/binding-blocks.svg
