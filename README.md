@@ -17,8 +17,6 @@ React 2-way data binding to easily manage complex forms and data structures.
 [coveralls]: https://coveralls.io/github/StayDistributed/binding-blocks?branch=master
 [codefactor-badge]: https://www.codefactor.io/repository/github/staydistributed/binding-blocks/badge
 [codefactor]: https://www.codefactor.io/repository/github/staydistributed/binding-blocks
-[bch-badge]: https://bettercodehub.com/edge/badge/StayDistributed/binding-blocks?branch=master
-[bch]: https://bettercodehub.com/
 [discord-badge]: https://img.shields.io/discord/699514717768515645
 [discord]: https://discord.gg/q4vx7ej
 
